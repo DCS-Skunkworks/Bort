@@ -1,7 +1,7 @@
 {
     "name": "dcs-bios-reference-tool",
     "author": "charlie",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "A tool for sending data to and viewing data from DCS-BIOS.",
     "main": "./.webpack/main/index.js",
     "scripts": {
@@ -37,6 +37,7 @@
         "@electron-forge/maker-squirrel": "6.0.0-beta.57",
         "@electron-forge/maker-zip": "6.0.0-beta.57",
         "@electron-forge/plugin-webpack": "6.0.0-beta.57",
+        "@electron-forge/publisher-github": "^6.0.0-beta.63",
         "@marshallofsound/webpack-asset-relocator-loader": "0.5.0",
         "@testing-library/jest-dom": "5.14.1",
         "@testing-library/react": "11.2.7",
@@ -72,7 +73,7 @@
         "forge": {
             "packagerConfig": {
                 "name": "DCS-BIOS Reference Tool",
-                "executableName": "dcs-bios-reference",
+                "executableName": "dcs-bios-reference-tool",
                 "icon": "assets/icon",
                 "extraResource": [
                     "assets"
@@ -103,7 +104,7 @@
                 {
                     "name": "@electron-forge/maker-squirrel",
                     "config": {
-                        "name": "Electron Starter"
+                        "name": "DcsBios.ReferenceTool"
                     }
                 },
                 {
@@ -119,6 +120,17 @@
                 {
                     "name": "@electron-forge/maker-rpm",
                     "config": {}
+                }
+            ],
+            "publishers": [
+                {
+                    "name": "@electron-forge/publisher-github",
+                    "config": {
+                        "repository": {
+                            "owner": "charliefoxtwo",
+                            "name": "dcs-bios-ui"
+                        }
+                    }
                 }
             ]
         }
