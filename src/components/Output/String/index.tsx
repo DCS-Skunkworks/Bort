@@ -1,5 +1,6 @@
 import { Component, ReactNode } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
+import { IpcRendererEvent } from 'electron';
 
 export interface StringOutputProps {
     address: number;
@@ -21,14 +22,23 @@ export default class StringOutput extends Component<StringOutputProps, StringOut
             stringBuffer: stringBuffer,
             stringBuffer_uint8: new Uint8Array(stringBuffer),
         };
+
+        this.onReceive = this.onReceive.bind(this);
+        this.updateValue = this.updateValue.bind(this);
     }
 
     public componentDidMount() {
-        window.Main.onBiosReceive((address: number, data: Uint16Array) => {
-            if (address >= this.props.address && this.props.address + this.props.maxLength > address) {
-                this.updateValue(address, data);
-            }
-        });
+        window.Main.onBiosReceive(this.onReceive);
+    }
+
+    // public componentWillUnmount() {
+    //     window.Main.stopBiosListening(this.onReceive);
+    // }
+
+    private onReceive(event: IpcRendererEvent, address: number, data: Uint16Array) {
+        if (address >= this.props.address && this.props.address + this.props.maxLength > address) {
+            this.updateValue(address, data);
+        }
     }
 
     private updateValue(calledAddress: number, data: Uint16Array) {
@@ -53,16 +63,19 @@ export default class StringOutput extends Component<StringOutputProps, StringOut
 
     public render(): ReactNode {
         const { currentValue } = this.state;
+
         return (
             <Grid container item xs={12} className="output">
-                <Grid
-                    item
-                    xs={11}
-                    sx={{
-                        fontFamily: 'Monospace',
-                    }}
-                >
-                    "{currentValue}"
+                <Grid item xs={11} sx={{ overflowX: 'auto' }}>
+                    <Typography
+                        variant={'body1'}
+                        component={'div'}
+                        sx={{
+                            fontFamily: 'Monospace',
+                        }}
+                    >
+                        <pre>"{currentValue}"</pre>
+                    </Typography>
                 </Grid>
                 <Grid item xs={1}>
                     {currentValue.length}

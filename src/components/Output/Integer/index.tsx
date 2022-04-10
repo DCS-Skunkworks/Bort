@@ -1,6 +1,7 @@
 import { Component, ReactNode } from 'react';
 import { Grid } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { IpcRendererEvent } from 'electron';
 
 export interface IntegerOutputProps {
     address: number;
@@ -20,17 +21,23 @@ export default class IntegerOutput extends Component<IntegerOutputProps, Integer
         this.state = {
             currentValue: 0,
         };
+
+        this.onReceive = this.onReceive.bind(this);
+        this.updateValue = this.updateValue.bind(this);
     }
 
-    // TODO: can these events be deregistered when not active? addresses are shared so seems difficult.
-    //  removals need a function and do discriminate based on callback, so if we can ensure the callback
-    //  used for removal is the same it would work.
     public componentDidMount() {
-        window.Main.onBiosReceive((address: number, data: Uint16Array) => {
-            if (address === this.props.address) {
-                this.updateValue(data[0]);
-            }
-        });
+        window.Main.onBiosReceive(this.onReceive);
+    }
+
+    // public componentWillUnmount() {
+    //     window.Main.stopBiosListening(this.onReceive);
+    // }
+
+    private onReceive(event: IpcRendererEvent, address: number, data: Uint16Array) {
+        if (address === this.props.address) {
+            this.updateValue(data[0]);
+        }
     }
 
     private updateValue(data: number) {
