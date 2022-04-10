@@ -46,21 +46,25 @@ export default class Output extends Component<OutputProps, any> {
                         fontWeight: theme => theme.typography.fontWeightBold,
                     }}
                 >
-                    Type:{' '}
+                    <Typography variant={'h6'} component={'h5'}>
+                        Type:
+                    </Typography>
+                </Grid>
+                <Grid item xs={10} lg={2}>
+                    {output.type}
                 </Grid>
                 <Grid item xs={2}>
-                    {output.type}{' '}
+                    <Typography
+                        variant={'body1'}
+                        component={'h6'}
+                        sx={{
+                            fontWeight: theme => theme.typography.fontWeightBold,
+                        }}
+                    >
+                        Current Value:
+                    </Typography>
                 </Grid>
-                <Grid
-                    item
-                    xs={2}
-                    sx={{
-                        fontWeight: theme => theme.typography.fontWeightBold,
-                    }}
-                >
-                    Current Value:{' '}
-                </Grid>
-                <Grid container item xs={6}>
+                <Grid container item xs={10} lg={6}>
                     {this.controlForInterface()}
                 </Grid>
             </Grid>

@@ -55,11 +55,11 @@ export default class Input extends Component<InputProps, any> {
                     }}
                 >
                     <Typography variant={'h6'} component={'h5'}>
-                        Interface:{' '}
+                        Interface:
                     </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                    <Typography variant={'body1'}>{input.interface} </Typography>
+                    <Typography variant={'body1'}>{input.interface}</Typography>
                 </Grid>
                 <Grid container item xs={12} md={8}>
                     {this.controlForInterface()}
