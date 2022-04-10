@@ -1,6 +1,7 @@
-import { contextBridge, ipcMain, ipcRenderer } from 'electron';
+import { contextBridge, ipcMain, ipcRenderer, IpcRendererEvent } from 'electron';
 import ModuleSet from '../src/@types/ModuleSet';
 import { promises as fs } from 'fs';
+import * as path from 'path';
 
 interface AircraftData {
     [name: string]: string[];
@@ -10,6 +11,13 @@ type IntegerFunction = (data: number) => void;
 type StringFunction = (data: string) => void;
 
 const callbacks: { [name: number]: (IntegerFunction | StringFunction)[] } = {};
+
+function getFileFromRoot(file: string): string {
+    return `%USERPROFILE%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json/${file}`.replace(
+        /%([^%]+)%/g,
+        (_, n) => process.env[n]!
+    );
+}
 
 export const api = {
     /**
@@ -34,8 +42,12 @@ export const api = {
     /**
      * Provide an easier way to listen to events
      */
-    onBiosReceive: (callback: (address: number, data: Uint16Array) => void) => {
-        ipcRenderer.on('receive-from-bios', (_, address: number, data: Uint16Array) => callback(address, data));
+    onBiosReceive: (callback: (event: IpcRendererEvent, address: number, data: Uint16Array) => void) => {
+        ipcRenderer.on('receive-from-bios', callback);
+    },
+
+    stopBiosListening: (callback: (event: IpcRendererEvent, address: number, data: Uint16Array) => void) => {
+        ipcRenderer.off('receive-from-bios', callback);
     },
 
     getModules: async (): Promise<string[]> => {
@@ -48,7 +60,7 @@ export const api = {
         modulesSet.add('MetadataStart');
         modulesSet.add('MetadataEnd');
 
-        const buffer = await fs.readFile('../doc/json/AircraftAliases.json');
+        const buffer = await fs.readFile(getFileFromRoot('AircraftAliases.json'));
         const data: AircraftData = JSON.parse(buffer.toString());
 
         // we can parse the values of AircraftAliases.json to find the json files for all modules
@@ -67,7 +79,7 @@ export const api = {
         const modules: ModuleSet = {};
 
         for (const n of moduleNames) {
-            const buffer = await fs.readFile(`../doc/json/${n}.json`);
+            const buffer = await fs.readFile(getFileFromRoot(`${n}.json`));
             modules[n] = JSON.parse(buffer.toString());
         }
 
