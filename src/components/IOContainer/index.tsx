@@ -9,6 +9,7 @@ import { blue, green, purple } from '@mui/material/colors';
 
 export interface IOContainerProps {
     text: 'Input' | 'Output';
+    children: ReactNode[];
 }
 
 const ioTheme: SxProps<Theme> = {
