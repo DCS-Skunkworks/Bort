@@ -3,7 +3,7 @@
     "author": "charlie",
     "version": "0.1.0",
     "description": "A tool for sending data to and viewing data from DCS-BIOS.",
-    "main": "./.webpack/main/index.js",
+    "main": ".webpack/main",
     "scripts": {
         "start": "electron-forge start",
         "package": "electron-forge package",
