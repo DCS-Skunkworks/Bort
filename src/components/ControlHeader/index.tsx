@@ -28,11 +28,6 @@ const controlNameTheme: SxProps<Theme> = {
     fontWeight: theme => theme.typography.fontWeightBold,
 };
 
-const controlIdTheme: SxProps<Theme> = {
-    fontFamily: 'Monospace',
-    textAlign: 'right',
-};
-
 export default class Control extends Component<ControlProps, any> {
     public constructor(props: ControlProps) {
         super(props);
@@ -51,7 +46,7 @@ export default class Control extends Component<ControlProps, any> {
         const { moduleName, description, identifier } = this.props;
         return (
             <Grid container item xs={12} sx={controlHeaderTheme} className="control-header">
-                <Grid item xs={12} sm={6} sx={controlNameTheme} className="control-description">
+                <Grid item xs={12} sm={6} sx={controlNameTheme} className="control-description valign-wrapper">
                     <Typography variant={'h4'} component={'h3'}>
                         {description}
                     </Typography>
@@ -60,11 +55,21 @@ export default class Control extends Component<ControlProps, any> {
                     item
                     xs={12}
                     sm={6}
-                    sx={controlIdTheme}
-                    className="control-identifier right-align valign"
+                    className="control-identifier"
                     // onClick={this.selectContents}
                 >
-                    {moduleName}/{identifier}
+                    <Typography
+                        variant={'body1'}
+                        component={'div'}
+                        sx={{
+                            fontFamily: 'Monospace',
+                        }}
+                        className={'right-align'}
+                    >
+                        <pre>
+                            {moduleName}/{identifier}
+                        </pre>
+                    </Typography>
                 </Grid>
             </Grid>
         );

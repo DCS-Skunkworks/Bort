@@ -169,13 +169,13 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item xs={1} className={'valign-wrapper'}>
                         {connectionStatus ? <Check /> : <CircularProgress />}
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={2} className={'valign-wrapper'}>
                         <Typography variant={'body1'}>{connectionStatus ? 'Connected!' : 'Connecting...'}</Typography>
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item xs={1} className={'valign-wrapper'}>
                         <IconButton onClick={onThemeToggle} color="inherit">
                             {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
