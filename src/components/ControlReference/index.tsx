@@ -1,10 +1,12 @@
 import {
+    Box,
     CircularProgress,
     Container,
     FormControl,
     Grid,
     IconButton,
     InputLabel,
+    LinearProgress,
     MenuItem,
     PaletteMode,
     Select,
@@ -19,6 +21,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Check } from '@mui/icons-material';
 import { IpcRendererEvent } from 'electron';
+import { red } from '@mui/material/colors';
 
 export interface ControlReferenceProps {
     theme: PaletteMode;
@@ -31,6 +34,7 @@ export interface ControlReferenceState {
     activeModule: string;
     activeCategory: string;
     connectionStatus: boolean;
+    hasLoadedModules: boolean;
 }
 
 export default class ControlReference extends Component<ControlReferenceProps, ControlReferenceState> {
@@ -45,6 +49,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             activeModule: '',
             activeCategory: '',
             connectionStatus: false,
+            hasLoadedModules: false,
         };
 
         this.retryConnection = this.retryConnection.bind(this);
@@ -65,6 +70,10 @@ export default class ControlReference extends Component<ControlReferenceProps, C
     }
 
     private async updateModules() {
+        this.setState({
+            hasLoadedModules: false,
+        });
+
         const moduleNames = await window.Main.getModules();
         const modules = await window.Main.getModuleData(moduleNames);
 
@@ -83,6 +92,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             modules: modules,
             activeModule: activeModuleName,
             activeCategory: activeCategoryName,
+            hasLoadedModules: true,
         });
     }
 
@@ -128,7 +138,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
 
     public render(): ReactNode {
         const { theme, onThemeToggle } = this.props;
-        const { modules, moduleNames, activeModule, activeCategory, connectionStatus } = this.state;
+        const { modules, moduleNames, activeModule, activeCategory, connectionStatus, hasLoadedModules } = this.state;
 
         const module = modules[activeModule];
         const hasModule = module !== null && module !== undefined;
@@ -181,7 +191,35 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                         </IconButton>
                     </Grid>
                     <Grid item xs={12}>
-                        <Module module={module} moduleName={activeModule} categoryName={activeCategory} />
+                        {hasLoadedModules ? (
+                            module ? (
+                                <Module module={module} moduleName={activeModule} categoryName={activeCategory} />
+                            ) : (
+                                <Box
+                                    sx={{
+                                        backgroundColor: red[500] + '22',
+                                        borderStyle: 'solid',
+                                        borderWidth: '1px',
+                                        borderColor: red[800],
+                                        borderRadius: '1rem',
+                                        width: '100%',
+                                        padding: '1rem',
+                                    }}
+                                >
+                                    <Typography component={'div'}>
+                                        <p>
+                                            Unable to locate modules. Please set the path of the DCS-BIOS .json files
+                                            from Menu &gt; Select dcs-bios location.
+                                        </p>
+                                        <span>
+                                            Current path: <pre>{window.Main.getSettingsJsonPath()}</pre>
+                                        </span>
+                                    </Typography>
+                                </Box>
+                            )
+                        ) : (
+                            <LinearProgress />
+                        )}
                     </Grid>
                 </Grid>
             </Container>

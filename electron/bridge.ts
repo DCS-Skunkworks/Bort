@@ -70,7 +70,6 @@ export const api = {
                 }
             });
         } catch (e) {
-            console.log('aliases file not found');
             modulesSet.clear();
         }
 

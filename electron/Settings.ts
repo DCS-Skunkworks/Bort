@@ -15,7 +15,10 @@ export default class Settings {
         this.store = new Store<SettingsSchema>({
             defaults: {
                 theme: 'light',
-                jsonPath: '%USERPROFILE%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json',
+                jsonPath: '%USERPROFILE%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json'.replace(
+                    /%([^%]+)%/g,
+                    (_, n) => process.env[n]!
+                ),
             },
         });
     }
