@@ -31,13 +31,13 @@ export default class Control extends Component<IOContainerProps, any> {
         const { children, text } = this.props;
         return (
             <Grid item xs={12}>
-                <Stack sx={ioTheme} spacing={2} className="control">
+                <Stack sx={ioTheme} className="control">
                     <Grid item xs={12}>
                         <Typography variant={'h5'} component={'h4'}>
                             {text}
                         </Typography>
                     </Grid>
-                    <Stack spacing={4} divider={<Divider />} className="ios">
+                    <Stack divider={<Divider />} className="ios">
                         {children}
                     </Stack>
                 </Stack>

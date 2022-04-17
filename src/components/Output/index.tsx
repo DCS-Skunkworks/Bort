@@ -38,13 +38,20 @@ export default class Output extends Component<OutputProps, any> {
     public render(): ReactNode {
         const { output } = this.props;
         return (
-            <Grid container item xs={12} className="input">
+            <Grid
+                container
+                item
+                columnSpacing={2}
+                sx={{ marginTop: '.1rem', marginBottom: '1rem' }}
+                className={'input valign-wrapper'}
+            >
                 <Grid
                     item
                     xs={2}
                     sx={{
                         fontWeight: theme => theme.typography.fontWeightBold,
                     }}
+                    className={'right-align'}
                 >
                     <Typography variant={'h6'} component={'h5'}>
                         Type:
@@ -53,7 +60,7 @@ export default class Output extends Component<OutputProps, any> {
                 <Grid item xs={10} lg={2}>
                     <Typography>{output.type}</Typography>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={2} className={'right-align'}>
                     <Typography
                         variant={'body1'}
                         component={'h6'}

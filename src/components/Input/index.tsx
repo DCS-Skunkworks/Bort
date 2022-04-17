@@ -44,15 +44,20 @@ export default class Input extends Component<InputProps, any> {
     public render(): ReactNode {
         const { input } = this.props;
         return (
-            <Grid container item xs={12} className="input">
-                <Divider />
+            <Grid
+                container
+                item
+                spacing={2}
+                sx={{ marginTop: '.1rem', marginBottom: '1rem' }}
+                className={'input valign-wrapper'}
+            >
                 <Grid
                     item
-                    xs={3}
-                    md={2}
+                    xs={2}
                     sx={{
                         fontWeight: theme => theme.typography.fontWeightBold,
                     }}
+                    className={'right-align'}
                 >
                     <Typography variant={'h6'} component={'h5'}>
                         Interface:
