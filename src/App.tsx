@@ -1,7 +1,7 @@
 import ControlReference from './components/ControlReference';
 import { Box, createTheme, PaletteMode, responsiveFontSizes, ThemeOptions, ThemeProvider } from '@mui/material';
 import { blue, green } from '@mui/material/colors';
-import React from 'react';
+import React, { Component, ReactNode } from 'react';
 
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     palette: {
@@ -22,27 +22,42 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     },
 });
 
-export function App() {
-    const [mode, setMode] = React.useState<'light' | 'dark'>('light');
-    const colorMode = React.useMemo(
-        () => ({
-            toggleColorMode: () => {
-                setMode(prevMode => (prevMode === 'light' ? 'dark' : 'light'));
-            },
-        }),
-        []
-    );
+interface AppState {
+    mode: PaletteMode;
+}
 
-    const theme = React.useMemo(
-        () =>
-            responsiveFontSizes(createTheme(getDesignTokens(mode)), {
-                factor: 5,
-            }),
-        [mode]
-    );
+export default class App extends Component<any, AppState> {
+    public constructor(props: any) {
+        super(props);
 
-    return (
-        <>
+        this.state = {
+            mode: 'light',
+        };
+
+        this.toggleColorMode = this.toggleColorMode.bind(this);
+    }
+
+    public componentDidMount() {
+        this.setState({
+            mode: window.Main.getSettingsTheme(),
+        });
+    }
+
+    private toggleColorMode() {
+        const newTheme = this.state.mode === 'light' ? 'dark' : 'light';
+        window.Main.setSettingsTheme(newTheme);
+        this.setState({
+            mode: newTheme,
+        });
+    }
+
+    public render() {
+        const { mode } = this.state;
+        const theme = responsiveFontSizes(createTheme(getDesignTokens(mode)), {
+            factor: 5,
+        });
+
+        return (
             <React.StrictMode>
                 <ThemeProvider theme={theme}>
                     <Box
@@ -52,13 +67,13 @@ export function App() {
                             left: 0,
                             width: '100vw',
                             height: '100vh',
-                            bgcolor: theme.palette.background.default,
+                            backgroundColor: theme.palette.background.default,
                             zIndex: -999999,
                         }}
                     />
-                    <ControlReference theme={mode} onThemeToggle={colorMode.toggleColorMode} />
+                    <ControlReference theme={mode} onThemeToggle={this.toggleColorMode} />
                 </ThemeProvider>
             </React.StrictMode>
-        </>
-    );
+        );
+    }
 }

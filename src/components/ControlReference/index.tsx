@@ -1,5 +1,4 @@
 import {
-    Button,
     CircularProgress,
     Container,
     FormControl,
@@ -7,6 +6,7 @@ import {
     IconButton,
     InputLabel,
     MenuItem,
+    PaletteMode,
     Select,
     SelectChangeEvent,
     Typography,
@@ -18,9 +18,10 @@ import Module from '../Module';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Check } from '@mui/icons-material';
+import { IpcRendererEvent } from 'electron';
 
 export interface ControlReferenceProps {
-    theme: 'light' | 'dark';
+    theme: PaletteMode;
     onThemeToggle: () => void;
 }
 
@@ -33,35 +34,61 @@ export interface ControlReferenceState {
 }
 
 export default class ControlReference extends Component<ControlReferenceProps, ControlReferenceState> {
+    private awaitingConnectionAttempt = false;
+
     public constructor(props: any) {
         super(props);
 
         this.state = {
             moduleNames: [],
             modules: {},
-            activeModule: 'MetadataEnd',
-            activeCategory: 'Metadata',
+            activeModule: '',
+            activeCategory: '',
             connectionStatus: false,
         };
 
         this.retryConnection = this.retryConnection.bind(this);
         this.changeModule = this.changeModule.bind(this);
         this.changeCategory = this.changeCategory.bind(this);
+        this.updateModules = this.updateModules.bind(this);
+        this.updateJsonPath = this.updateJsonPath.bind(this);
         this.updateConnectionStatus = this.updateConnectionStatus.bind(this);
     }
 
     public async componentDidMount() {
+        await this.updateModules();
+
+        window.Main.on('new-json-path', this.updateJsonPath);
+        window.Main.on('bios-connection-status', this.updateConnectionStatus);
+
+        window.Main.pollBiosConnection();
+    }
+
+    private async updateModules() {
         const moduleNames = await window.Main.getModules();
         const modules = await window.Main.getModuleData(moduleNames);
+
+        const activeModuleName = moduleNames.includes('MetadataEnd') ? 'MetadataEnd' : '';
+        const activeModule = modules[activeModuleName];
+        let activeCategoryName = '';
+        if (activeModule !== null && activeModule !== undefined) {
+            const activeCategory = activeModule['Metadata'];
+            if (activeCategory !== null && activeCategory !== undefined) {
+                activeCategoryName = 'Metadata';
+            }
+        }
 
         this.setState({
             moduleNames: moduleNames,
             modules: modules,
+            activeModule: activeModuleName,
+            activeCategory: activeCategoryName,
         });
+    }
 
-        window.Main.on('bios-connection-status', this.updateConnectionStatus);
-
-        window.Main.pollBiosConnection();
+    private updateJsonPath(path: string) {
+        window.Main.setSettingsJsonPath(path);
+        this.updateModules().then(r => r);
     }
 
     private updateConnectionStatus(status: boolean) {
@@ -69,12 +96,14 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             connectionStatus: status,
         });
 
-        if (!status) {
-            setTimeout(window.Main.retryBiosConnection, 5000);
+        if (!status && !this.awaitingConnectionAttempt) {
+            this.awaitingConnectionAttempt = true;
+            setTimeout(this.retryConnection, 5000);
         }
     }
 
     private async retryConnection() {
+        this.awaitingConnectionAttempt = false;
         window.Main.retryBiosConnection();
     }
 

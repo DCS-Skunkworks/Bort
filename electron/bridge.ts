@@ -1,7 +1,8 @@
-import { contextBridge, ipcMain, ipcRenderer, IpcRendererEvent } from 'electron';
+import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import ModuleSet from '../src/@types/ModuleSet';
 import { promises as fs } from 'fs';
-import * as path from 'path';
+import Settings from './Settings';
+import { PaletteMode } from '@mui/material';
 
 interface AircraftData {
     [name: string]: string[];
@@ -13,10 +14,7 @@ type StringFunction = (data: string) => void;
 const callbacks: { [name: number]: (IntegerFunction | StringFunction)[] } = {};
 
 function getFileFromRoot(file: string): string {
-    return `%USERPROFILE%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json/${file}`.replace(
-        /%([^%]+)%/g,
-        (_, n) => process.env[n]!
-    );
+    return `${Settings.Instance.JsonPath}\\${file}`;
 }
 
 export const api = {
@@ -60,16 +58,21 @@ export const api = {
         modulesSet.add('MetadataStart');
         modulesSet.add('MetadataEnd');
 
-        const buffer = await fs.readFile(getFileFromRoot('AircraftAliases.json'));
-        const data: AircraftData = JSON.parse(buffer.toString());
+        try {
+            const buffer = await fs.readFile(getFileFromRoot('AircraftAliases.json'));
+            const data: AircraftData = JSON.parse(buffer.toString());
 
-        // we can parse the values of AircraftAliases.json to find the json files for all modules
-        Object.entries(data).forEach(entry => {
-            const values = entry[1];
-            if (values !== undefined && values !== null) {
-                values.forEach(value => modulesSet.add(value));
-            }
-        });
+            // we can parse the values of AircraftAliases.json to find the json files for all modules
+            Object.entries(data).forEach(entry => {
+                const values = entry[1];
+                if (values !== undefined && values !== null) {
+                    values.forEach(value => modulesSet.add(value));
+                }
+            });
+        } catch (e) {
+            console.log('aliases file not found');
+            modulesSet.clear();
+        }
 
         // once the first three items are added, all others should be added in alphabetical order
         return Array.from(modulesSet).sort();
@@ -125,6 +128,22 @@ export const api = {
                 f(d);
             });
         }
+    },
+
+    getSettingsTheme: (): PaletteMode => {
+        return Settings.Instance.Theme;
+    },
+
+    setSettingsTheme: (theme: PaletteMode) => {
+        Settings.Instance.Theme = theme;
+    },
+
+    getSettingsJsonPath: (): string => {
+        return Settings.Instance.JsonPath;
+    },
+
+    setSettingsJsonPath: (path: string) => {
+        Settings.Instance.JsonPath = path;
     },
 };
 

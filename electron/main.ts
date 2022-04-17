@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu, MenuItem } from 'electron';
 import * as net from 'net';
 import ProtocolParser from './ProtocolParser';
 import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
+import Store from 'electron-store';
 
 let mainWindow: BrowserWindow | null;
 
@@ -17,6 +18,7 @@ let socketClient: net.Socket;
 let protocolParser: ProtocolParser;
 
 function createWindow() {
+    Store.initRenderer();
     mainWindow = new BrowserWindow({
         // icon: path.join(assetsPath, 'assets', 'icon.png'),
         width: 1100,
@@ -27,6 +29,51 @@ function createWindow() {
             preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
         },
     });
+
+    // setting up the menu with just two items
+    const menu = Menu.buildFromTemplate([
+        {
+            label: 'Menu',
+            submenu: [
+                {
+                    label: 'Select dcs-bios location',
+                    accelerator: 'CmdOrCtrl+O',
+                    // this is the main bit hijack the click event
+                    click(menuItem, browserWindow, event) {
+                        // construct the select file dialog
+                        dialog
+                            .showOpenDialog({
+                                properties: ['openDirectory'],
+                                defaultPath: '%USERPROFILE%/Saved Games/'.replace(
+                                    /%([^%]+)%/g,
+                                    (_, n) => process.env[n]!
+                                ),
+                            })
+                            .then(function (fileObj) {
+                                // the fileObj has two props
+                                if (!fileObj.canceled) {
+                                    browserWindow?.webContents?.send('new-json-path', fileObj.filePaths[0]);
+                                }
+                            })
+                            // should always handle the error yourself, later Electron release might crash if you don't
+                            .catch(function (err) {
+                                console.error(err);
+                            });
+                    },
+                },
+                {
+                    label: 'Exit',
+                    click() {
+                        app.quit();
+                    },
+                },
+            ],
+        },
+        new MenuItem({
+            role: 'viewMenu',
+        }),
+    ]);
+    Menu.setApplicationMenu(menu);
 
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
     mainWindow.setAlwaysOnTop(true);
