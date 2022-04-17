@@ -1,5 +1,5 @@
 import { Component, ReactNode } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { IpcRendererEvent } from 'electron';
 
@@ -61,10 +61,10 @@ export default class IntegerOutput extends Component<IntegerOutputProps, Integer
                     <ArrowUpwardIcon sx={{ transform: `rotate(${rotation}deg)` }} />
                 </Grid>
                 <Grid item xs={4}>
-                    {currentValue}
+                    <Typography>{currentValue}</Typography>
                 </Grid>
                 <Grid item xs={4}>
-                    {`${percentage.toFixed()}%`}
+                    <Typography>{`${percentage.toFixed()}%`}</Typography>
                 </Grid>
             </Grid>
         );

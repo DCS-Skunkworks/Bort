@@ -30,6 +30,7 @@ const controlNameTheme: SxProps<Theme> = {
 
 const controlIdTheme: SxProps<Theme> = {
     fontFamily: 'Monospace',
+    textAlign: 'right',
 };
 
 export default class Control extends Component<ControlProps, any> {

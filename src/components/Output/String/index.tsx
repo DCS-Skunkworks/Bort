@@ -78,7 +78,7 @@ export default class StringOutput extends Component<StringOutputProps, StringOut
                     </Typography>
                 </Grid>
                 <Grid item xs={1}>
-                    {currentValue.length}
+                    <Typography>{currentValue.length}</Typography>
                 </Grid>
             </Grid>
         );

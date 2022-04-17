@@ -51,7 +51,7 @@ export default class Output extends Component<OutputProps, any> {
                     </Typography>
                 </Grid>
                 <Grid item xs={10} lg={2}>
-                    {output.type}
+                    <Typography>{output.type}</Typography>
                 </Grid>
                 <Grid item xs={2}>
                     <Typography
