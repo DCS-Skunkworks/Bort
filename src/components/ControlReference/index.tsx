@@ -151,7 +151,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                 }}
             >
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={4}>
                         <FormControl fullWidth>
                             <InputLabel>Module</InputLabel>
                             <Select value={activeModule} label={'Module'} onChange={this.changeModule}>
@@ -163,7 +163,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={8} md={4}>
                         <FormControl fullWidth>
                             <InputLabel>Category</InputLabel>
                             <Select value={activeCategory} label={'Category'} onChange={this.changeCategory}>
@@ -177,13 +177,14 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={1} className={'valign-wrapper'}>
+                    <Grid item xs={2} md={1} className={'valign-wrapper'}>
                         {connectionStatus ? <Check /> : <CircularProgress />}
                     </Grid>
-                    <Grid item xs={2} className={'valign-wrapper'}>
+                    <Grid item xs={4} md={2} className={'valign-wrapper'}>
                         <Typography variant={'body1'}>{connectionStatus ? 'Connected!' : 'Connecting...'}</Typography>
                     </Grid>
-                    <Grid item xs={1} className={'valign-wrapper'}>
+                    <Grid xs={4} sm={5} md />
+                    <Grid item xs={2} sm={1} className={'valign-wrapper'}>
                         <IconButton onClick={onThemeToggle} color="inherit">
                             {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
