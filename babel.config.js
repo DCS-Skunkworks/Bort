@@ -1,5 +1,6 @@
-module.exports = {
-    presets: [
+module.exports = function babel(api) {
+    const BABEL_ENV = api.env();
+    const presets = [
         '@babel/preset-env',
         '@babel/preset-typescript',
         [
@@ -8,13 +9,20 @@ module.exports = {
                 runtime: 'automatic',
             },
         ],
-    ],
-    plugins: [
+    ];
+    const plugins = [
         [
             '@babel/plugin-transform-runtime',
             {
                 regenerator: true,
             },
         ],
-    ],
+    ];
+    if (BABEL_ENV === 'development') {
+        plugins.push('react-refresh/babel');
+    }
+    return {
+        presets,
+        plugins,
+    };
 };

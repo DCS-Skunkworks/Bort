@@ -1,7 +1,7 @@
 import ControlReference from './components/ControlReference';
 import { Box, createTheme, PaletteMode, responsiveFontSizes, ThemeOptions, ThemeProvider } from '@mui/material';
 import { blue, green } from '@mui/material/colors';
-import React, { Component, ReactNode } from 'react';
+import React, { Component } from 'react';
 
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     palette: {
@@ -26,8 +26,8 @@ interface AppState {
     mode: PaletteMode;
 }
 
-export default class App extends Component<any, AppState> {
-    public constructor(props: any) {
+export default class App extends Component<unknown, AppState> {
+    public constructor(props: unknown) {
         super(props);
 
         this.state = {

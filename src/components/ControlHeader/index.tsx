@@ -1,12 +1,7 @@
-import { Divider, Grid, Stack, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Component, ReactNode } from 'react';
-import ControlItem from '../../@types/Control';
-import Input from '../Input';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
-import Output from '../Output';
-import { blue, green, purple } from '@mui/material/colors';
-import IOContainer from '../IOContainer';
 
 export interface ControlProps {
     moduleName: string;
@@ -28,16 +23,16 @@ const controlNameTheme: SxProps<Theme> = {
     fontWeight: theme => theme.typography.fontWeightBold,
 };
 
-export default class Control extends Component<ControlProps, any> {
+export default class Control extends Component<ControlProps> {
     public constructor(props: ControlProps) {
         super(props);
         this.selectContents = this.selectContents.bind(this);
     }
 
-    selectContents(el: any) {
-        let range = document.createRange();
+    selectContents(el: Node) {
+        const range = document.createRange();
         range.selectNodeContents(el);
-        let sel = window.getSelection()!;
+        const sel = window.getSelection()!;
         sel.removeAllRanges();
         sel.addRange(range);
     }

@@ -15,12 +15,10 @@ import {
 } from '@mui/material';
 import { Component, ReactNode } from 'react';
 import ModuleSet from '../../@types/ModuleSet';
-import Category from '../Category';
 import Module from '../Module';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Check } from '@mui/icons-material';
-import { IpcRendererEvent } from 'electron';
 import { red } from '@mui/material/colors';
 
 export interface ControlReferenceProps {
@@ -40,7 +38,7 @@ export interface ControlReferenceState {
 export default class ControlReference extends Component<ControlReferenceProps, ControlReferenceState> {
     private awaitingConnectionAttempt = false;
 
-    public constructor(props: any) {
+    public constructor(props: ControlReferenceProps) {
         super(props);
 
         this.state = {
@@ -122,7 +120,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             const newModuleName = event.target.value;
             const newModule = this.state.modules[newModuleName];
             const firstCategory = Object.entries(newModule)[0];
-            const firstCategoryName = firstCategory ? firstCategory![0] : '';
+            const firstCategoryName = firstCategory[0];
             this.setState({
                 activeModule: newModuleName,
                 activeCategory: firstCategoryName,

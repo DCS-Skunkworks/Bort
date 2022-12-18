@@ -4,10 +4,10 @@ import { Button } from '@mui/material';
 export interface ActionButtonProps {
     text: string;
     argument: string;
-    onClick: (argument: string) => {};
+    onClick: (argument: string) => void;
 }
 
-export default class ActionButton extends Component<ActionButtonProps, any> {
+export default class ActionButton extends Component<ActionButtonProps> {
     public constructor(props: ActionButtonProps) {
         super(props);
     }

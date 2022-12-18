@@ -3,10 +3,10 @@ import ActionButton from '../Action';
 import { Grid } from '@mui/material';
 
 export interface FixedStateProps {
-    onClick: (argument: string) => {};
+    onClick: (argument: string) => void;
 }
 
-export default class FixedState extends Component<FixedStateProps, any> {
+export default class FixedState extends Component<FixedStateProps> {
     public constructor(props: FixedStateProps) {
         super(props);
     }

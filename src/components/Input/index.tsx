@@ -5,14 +5,14 @@ import ActionButton from './Action';
 import SetState from './SetState';
 import VariableStep from './VariableStep';
 import FixedState from './FixedStep';
-import { Divider, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 export interface InputProps {
     identifier: string;
     input: InputItem;
 }
 
-export default class Input extends Component<InputProps, any> {
+export default class Input extends Component<InputProps> {
     public constructor(props: InputProps) {
         super(props);
         this.trigger = this.trigger.bind(this);

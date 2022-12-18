@@ -1,11 +1,7 @@
 import { Divider, Grid, Stack, Typography } from '@mui/material';
 import { Component, ReactNode } from 'react';
-import ControlItem from '../../@types/Control';
-import Input from '../Input';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
-import Output from '../Output';
-import { blue, green, purple } from '@mui/material/colors';
 
 export interface IOContainerProps {
     text: 'Input' | 'Output';
@@ -22,7 +18,7 @@ const ioTheme: SxProps<Theme> = {
     marginTop: '1rem',
 };
 
-export default class Control extends Component<IOContainerProps, any> {
+export default class Control extends Component<IOContainerProps> {
     public constructor(props: IOContainerProps) {
         super(props);
     }

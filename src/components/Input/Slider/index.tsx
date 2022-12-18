@@ -1,6 +1,6 @@
 import { Component, ReactNode } from 'react';
 import { Slider } from '@mui/material';
-import { Mark } from '@mui/base/SliderUnstyled/SliderUnstyledProps';
+import { Mark } from '@mui/base/SliderUnstyled/';
 
 export interface SliderProps {
     value: number;
@@ -10,7 +10,7 @@ export interface SliderProps {
     onChange: (event: Event, value: number | number[], activeThumb: number) => void;
 }
 
-export default class ControlSlider extends Component<SliderProps, any> {
+export default class ControlSlider extends Component<SliderProps> {
     public constructor(props: SliderProps) {
         super(props);
     }

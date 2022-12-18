@@ -1,11 +1,10 @@
-import { Divider, Grid, Stack, Typography } from '@mui/material';
+import { Divider, Grid, Stack } from '@mui/material';
 import { Component, ReactNode } from 'react';
 import ControlItem from '../../@types/Control';
 import Input from '../Input';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
 import Output from '../Output';
-import { blue, green, purple } from '@mui/material/colors';
 import IOContainer from '../IOContainer';
 import ControlHeader from '../ControlHeader';
 
@@ -21,53 +20,17 @@ const controlTheme: SxProps<Theme> = {
     // marginTop: '1rem',
 };
 
-const controlHeaderTheme: SxProps<Theme> = {
-    borderWidth: '.1rem',
-    borderStyle: 'solid',
-    borderColor: green['800'],
-    bgcolor: green['50'],
-    borderRadius: '.25rem',
-    padding: '1rem',
-    marginTop: '1rem',
-};
-
-const controlNameTheme: SxProps<Theme> = {
-    fontWeight: theme => theme.typography.fontWeightBold,
-};
-
-const controlIdTheme: SxProps<Theme> = {
-    fontFamily: theme => 'Monospace',
-};
-
-const inputTheme: SxProps<Theme> = {
-    borderWidth: '.1rem',
-    borderStyle: 'solid',
-    borderColor: blue['800'],
-    bgcolor: blue['50'],
-    borderRadius: '.25rem',
-    padding: '1rem',
-    marginTop: '1rem',
-};
-const outputTheme: SxProps<Theme> = {
-    borderWidth: '.1rem',
-    borderStyle: 'solid',
-    borderColor: blue['800'],
-    bgcolor: blue['50'],
-    borderRadius: '.25rem',
-    padding: '1rem',
-    marginTop: '1rem',
-};
-
-export default class Control extends Component<ControlProps, any> {
+export default class Control extends Component<ControlProps> {
     public constructor(props: ControlProps) {
         super(props);
         this.selectContents = this.selectContents.bind(this);
     }
 
-    selectContents(el: any) {
-        let range = document.createRange();
+    // use this to auto select the control name
+    selectContents(el: Node) {
+        const range = document.createRange();
         range.selectNodeContents(el);
-        let sel = window.getSelection()!;
+        const sel = window.getSelection()!;
         sel.removeAllRanges();
         sel.addRange(range);
     }

@@ -17,7 +17,7 @@ export default class Settings {
                 theme: 'light',
                 jsonPath: '%USERPROFILE%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json'.replace(
                     /%([^%]+)%/g,
-                    (_, n) => process.env[n]!
+                    (_, n) => process.env[n] ?? ""
                 ),
             },
         });

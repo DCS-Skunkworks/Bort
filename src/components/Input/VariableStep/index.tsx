@@ -2,32 +2,40 @@ import { Component, ReactNode } from 'react';
 import ActionButton from '../Action';
 import { Grid } from '@mui/material';
 import ControlSlider from '../Slider';
+import InputState from '../InputState';
 
 export interface VariableStepProps {
     defaultStep: number;
     max: number;
-    onTrigger: (argument: string) => {};
+    onTrigger: (argument: string) => void;
 }
 
-export default class VariableStep extends Component<VariableStepProps, any> {
+export default class VariableStep extends Component<VariableStepProps, InputState> {
     public constructor(props: VariableStepProps) {
         super(props);
         this.state = {
-            currentStep: this.props.defaultStep,
+            currentValue: this.props.defaultStep,
         };
 
         this.onSliderChange = this.onSliderChange.bind(this);
     }
 
-    private onSliderChange(event: Event, value: number | number[], activeThumb: number) {
+    private onSliderChange(event: Event, value: number | number[]) {
+        let numberValue: number;
+        if (typeof value === 'number') {
+            numberValue = value;
+        } else {
+            numberValue = value[0];
+        }
+
         this.setState({
-            currentStep: value,
+            currentValue: numberValue,
         });
     }
 
     public render(): ReactNode {
         const { defaultStep, max, onTrigger } = this.props;
-        const { currentStep } = this.state;
+        const { currentValue } = this.state;
         const extraMarks = [{ value: defaultStep, label: '' }];
         return (
             <Grid container item spacing={2}>
@@ -35,16 +43,16 @@ export default class VariableStep extends Component<VariableStepProps, any> {
                     <ControlSlider
                         min={1}
                         max={max}
-                        value={currentStep}
+                        value={currentValue}
                         extraMarks={extraMarks}
                         onChange={this.onSliderChange}
                     />
                 </Grid>
                 <Grid item xs={6} md={2}>
-                    <ActionButton text={`-${currentStep}`} argument={`-${currentStep}`} onClick={onTrigger} />
+                    <ActionButton text={`-${currentValue}`} argument={`-${currentValue}`} onClick={onTrigger} />
                 </Grid>
                 <Grid item xs={6} md={2}>
-                    <ActionButton text={`+${currentStep}`} argument={`+${currentStep}`} onClick={onTrigger} />
+                    <ActionButton text={`+${currentValue}`} argument={`+${currentValue}`} onClick={onTrigger} />
                 </Grid>
             </Grid>
         );

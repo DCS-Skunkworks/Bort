@@ -1,7 +1,7 @@
 import { Component, ReactNode } from 'react';
 import CategoryItem from '../../@types/Category';
 import Control from '../Control';
-import { Grid, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 export interface CategoryProps {
     moduleName: string;
@@ -9,7 +9,7 @@ export interface CategoryProps {
     category: CategoryItem;
 }
 
-export default class Category extends Component<CategoryProps, any> {
+export default class Category extends Component<CategoryProps> {
     public constructor(props: CategoryProps) {
         super(props);
     }

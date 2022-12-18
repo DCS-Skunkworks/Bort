@@ -1,7 +1,6 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, MenuItem } from 'electron';
 import * as net from 'net';
 import ProtocolParser from './ProtocolParser';
-import installExtension, { REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 import Store from 'electron-store';
 
 let mainWindow: BrowserWindow | null;
@@ -42,14 +41,14 @@ function createWindow() {
                     label: 'Select dcs-bios location',
                     accelerator: 'CmdOrCtrl+O',
                     // this is the main bit hijack the click event
-                    click(menuItem, browserWindow, event) {
+                    click(menuItem, browserWindow) {
                         // construct the select file dialog
                         dialog
                             .showOpenDialog({
                                 properties: ['openDirectory'],
                                 defaultPath: '%USERPROFILE%/Saved Games/'.replace(
                                     /%([^%]+)%/g,
-                                    (_, n) => process.env[n]!
+                                    (_, n) => process.env[n] ?? ""
                                 ),
                             })
                             .then(function (fileObj) {
@@ -94,7 +93,9 @@ function createWindow() {
         connectedToBios = true;
         reportBiosStatus();
     });
-    socketClient.on('ready', () => {});
+    socketClient.on('ready', () => {
+        console.log('ready');
+    });
     socketClient.on('data', data => {
         const d = new DataView(data.buffer);
         for (let i = 0; i < d.byteLength; i++) {
@@ -127,10 +128,9 @@ function reportBiosStatus() {
 }
 
 function rawStringToBuffer(str: string) {
-    var idx,
-        len = str.length,
-        arr = new Array(len);
-    for (idx = 0; idx < len; ++idx) {
+    const len = str.length;
+    const arr = new Array(len);
+    for (let idx = 0; idx < len; ++idx) {
         arr[idx] = str.charCodeAt(idx) & 0xff;
     }
     // You may create an ArrayBuffer from a standard array (of values) as follows:

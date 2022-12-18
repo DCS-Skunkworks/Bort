@@ -10,7 +10,7 @@ export interface OutputProps {
     output: OutputItem;
 }
 
-export default class Output extends Component<OutputProps, any> {
+export default class Output extends Component<OutputProps> {
     public constructor(props: OutputProps) {
         super(props);
         this.controlForInterface = this.controlForInterface.bind(this);

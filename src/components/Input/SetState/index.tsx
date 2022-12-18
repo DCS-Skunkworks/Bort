@@ -1,14 +1,15 @@
-import { ChangeEvent, Component, ReactNode } from 'react';
+import { Component, ReactNode } from 'react';
 import ControlSlider from '../Slider';
 import ActionButton from '../Action';
 import { Grid } from '@mui/material';
+import InputState from '../InputState';
 
 export interface SetStateProps {
     max: number;
-    onTrigger: (argument: string) => {};
+    onTrigger: (argument: string) => void;
 }
 
-export default class Input extends Component<SetStateProps, any> {
+export default class Input extends Component<SetStateProps, InputState> {
     public constructor(props: SetStateProps) {
         super(props);
         this.state = {
@@ -18,9 +19,16 @@ export default class Input extends Component<SetStateProps, any> {
         this.onSliderChange = this.onSliderChange.bind(this);
     }
 
-    private onSliderChange(event: Event, value: number | number[], activeThumb: number) {
+    private onSliderChange(event: Event, value: number | number[]) {
+        let numberValue: number;
+        if (typeof value === 'number') {
+            numberValue = value;
+        } else {
+            numberValue = value[0];
+        }
+
         this.setState({
-            currentValue: value,
+            currentValue: numberValue,
         });
     }
 
@@ -33,7 +41,11 @@ export default class Input extends Component<SetStateProps, any> {
                     <ControlSlider min={0} max={max} value={currentValue} onChange={this.onSliderChange} />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <ActionButton text={currentValue} argument={currentValue} onClick={onTrigger} />
+                    <ActionButton
+                        text={currentValue.toString()}
+                        argument={currentValue.toString()}
+                        onClick={onTrigger}
+                    />
                 </Grid>
             </Grid>
         );
