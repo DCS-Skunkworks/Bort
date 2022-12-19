@@ -1,7 +1,7 @@
 {
     "name": "dcs-bios-reference-tool",
     "author": "charlie",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "description": "A tool for sending data to and viewing data from DCS-BIOS.",
     "main": ".webpack/main",
     "scripts": {
