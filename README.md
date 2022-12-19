@@ -10,7 +10,7 @@ Bort (Bios Reference Tool) is a modern (probably) UI for [dcs-bios](https://gith
 
 It is designed as a modern replacement for the old bios reference tool that runs as a Chrome app, which are [no longer supported](https://support.google.com/chrome/thread/174381169?visit_id=638069310111462121-3654496055&p=chrome_app_deprecation&rd=1).
 
-![](doc/img/bort-light.png) ![](doc/img/bort-dark.png)
+![](doc/img/bort-large-0.2.0.png)
 
 ## Why?
 
@@ -20,7 +20,7 @@ That said, I'm not a frontend engineer. This thing could use a lot of improvemen
 
 ## Installation
 
-Download and run the setup for the [latest release](https://github.com/charliefoxtwo/Bort/releases/latest) for your operating system (for 99.9% of you, this will be `dcs-bios-reference-tool-x.y.z.Setup.exe`). 
+Download and run the setup for the [latest release](https://github.com/charliefoxtwo/Bort/releases/latest) for your operating system (for 99.9% of you, this will be `bort-x.y.z.Setup.exe`). 
 
 ## Usage
 
