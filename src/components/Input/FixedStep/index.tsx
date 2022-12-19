@@ -6,7 +6,7 @@ export interface FixedStateProps {
     onClick: (argument: string) => void;
 }
 
-export default class FixedState extends Component<FixedStateProps> {
+export default class FixedStep extends Component<FixedStateProps> {
     public constructor(props: FixedStateProps) {
         super(props);
     }

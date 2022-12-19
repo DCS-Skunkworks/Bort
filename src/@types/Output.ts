@@ -7,5 +7,6 @@ export default interface Output {
     shift_by?: number;
     max_value?: number;
     max_length?: number;
+    description?: string;
     type: OutputType;
 }

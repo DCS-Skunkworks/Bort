@@ -24,6 +24,8 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
 
 interface AppState {
     mode: PaletteMode;
+    showLiveData: boolean;
+    showArduinoData: boolean;
 }
 
 export default class App extends Component<unknown, AppState> {
@@ -32,14 +34,20 @@ export default class App extends Component<unknown, AppState> {
 
         this.state = {
             mode: 'light',
+            showLiveData: true,
+            showArduinoData: false,
         };
 
         this.toggleColorMode = this.toggleColorMode.bind(this);
+        this.toggleShowLiveData = this.toggleShowLiveData.bind(this);
+        this.toggleShowArduinoData = this.toggleShowArduinoData.bind(this);
     }
 
     public componentDidMount() {
         this.setState({
             mode: window.Main.getSettingsTheme(),
+            showLiveData: window.Main.getShowLiveData(),
+            showArduinoData: window.Main.getShowArduinoData(),
         });
     }
 
@@ -51,8 +59,24 @@ export default class App extends Component<unknown, AppState> {
         });
     }
 
+    private toggleShowLiveData() {
+        const newValue = !this.state.showLiveData;
+        window.Main.setShowLiveData(newValue);
+        this.setState({
+            showLiveData: newValue,
+        });
+    }
+
+    private toggleShowArduinoData() {
+        const newValue = !this.state.showArduinoData;
+        window.Main.setShowArduinoData(newValue);
+        this.setState({
+            showArduinoData: newValue,
+        });
+    }
+
     public render() {
-        const { mode } = this.state;
+        const { mode, showLiveData, showArduinoData } = this.state;
         const theme = responsiveFontSizes(createTheme(getDesignTokens(mode)), {
             factor: 5,
         });
@@ -71,7 +95,14 @@ export default class App extends Component<unknown, AppState> {
                             zIndex: -999999,
                         }}
                     />
-                    <ControlReference theme={mode} onThemeToggle={this.toggleColorMode} />
+                    <ControlReference
+                        theme={mode}
+                        onThemeToggle={this.toggleColorMode}
+                        onShowLiveDataToggle={this.toggleShowLiveData}
+                        onShowArduinoCodeToggle={this.toggleShowArduinoData}
+                        showLiveData={showLiveData}
+                        showArduinoData={showArduinoData}
+                    />
                 </ThemeProvider>
             </React.StrictMode>
         );

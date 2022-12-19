@@ -10,6 +10,8 @@ import ControlHeader from '../ControlHeader';
 
 export interface ControlProps {
     moduleName: string;
+    showLiveData: boolean;
+    showArduinoData: boolean;
     control: ControlItem;
 }
 
@@ -36,7 +38,7 @@ export default class Control extends Component<ControlProps> {
     }
 
     public render(): ReactNode {
-        const { moduleName, control } = this.props;
+        const { moduleName, control, showLiveData, showArduinoData } = this.props;
         const hasInputs = control.inputs.length > 0;
         const hasOutputs = control.outputs.length > 0;
         return (
@@ -51,14 +53,26 @@ export default class Control extends Component<ControlProps> {
                     {hasInputs && (
                         <IOContainer text={'Input'}>
                             {control.inputs.map((x, i) => (
-                                <Input identifier={control.identifier} input={x} key={i} />
+                                <Input
+                                    identifier={control.identifier}
+                                    input={x}
+                                    key={i}
+                                    showLiveData={showLiveData}
+                                    showArduinoData={showArduinoData}
+                                />
                             ))}
                         </IOContainer>
                     )}
                     {hasOutputs && (
                         <IOContainer text={'Output'}>
                             {control.outputs.map((x, i) => (
-                                <Output identifier={control.identifier} output={x} key={i} />
+                                <Output
+                                    identifier={control.identifier}
+                                    output={x}
+                                    key={i}
+                                    showLiveData={showLiveData}
+                                    showArduinoData={showArduinoData}
+                                />
                             ))}
                         </IOContainer>
                     )}

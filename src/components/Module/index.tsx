@@ -7,6 +7,8 @@ export interface ModuleProps {
     moduleName: string;
     module: Aircraft;
     categoryName: string;
+    showLiveData: boolean;
+    showArduinoData: boolean;
 }
 
 export default class Module extends Component<ModuleProps> {
@@ -15,13 +17,19 @@ export default class Module extends Component<ModuleProps> {
     }
 
     public render(): ReactNode {
-        const { module, moduleName, categoryName } = this.props;
+        const { module, moduleName, categoryName, showLiveData, showArduinoData } = this.props;
         const category = module[categoryName];
 
         return (
             <Stack spacing={2}>
                 {category !== undefined && (
-                    <Category moduleName={moduleName} categoryName={categoryName} category={category} />
+                    <Category
+                        moduleName={moduleName}
+                        categoryName={categoryName}
+                        category={category}
+                        showLiveData={showLiveData}
+                        showArduinoData={showArduinoData}
+                    />
                 )}
             </Stack>
         );

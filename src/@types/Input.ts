@@ -5,4 +5,5 @@ export default interface Input {
     argument?: string;
     max_value?: number;
     suggested_step?: number;
+    description?: string;
 }

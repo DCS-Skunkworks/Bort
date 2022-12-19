@@ -4,11 +4,17 @@ import { InputInterface } from '../../@types/InputInterface';
 import ActionButton from './Action';
 import SetState from './SetState';
 import VariableStep from './VariableStep';
-import FixedState from './FixedStep';
+import FixedStep from './FixedStep';
 import { Grid, Typography } from '@mui/material';
+import FixedStepSnippetBlock from '../Snippet/InputSnippet/StepSnippetBlock/FixedStepSnippetBlock';
+import VariableStepSnippetBlock from '../Snippet/InputSnippet/StepSnippetBlock/VariableStepSnippetBlock';
+import ActionSnippetBlock from '../Snippet/InputSnippet/ActionSnippetBlock';
+import SetStateSnippetBlock from '../Snippet/InputSnippet/SetStateSnippetBlock';
 
 export interface InputProps {
     identifier: string;
+    showLiveData: boolean;
+    showArduinoData: boolean;
     input: InputItem;
 }
 
@@ -17,6 +23,7 @@ export default class Input extends Component<InputProps> {
         super(props);
         this.trigger = this.trigger.bind(this);
         this.controlForInterface = this.controlForInterface.bind(this);
+        this.snippetForInterface = this.snippetForInterface.bind(this);
     }
 
     private async trigger(argument: string) {
@@ -30,7 +37,7 @@ export default class Input extends Component<InputProps> {
             case InputInterface.ACTION:
                 return <ActionButton text={input.argument!} argument={input.argument!} onClick={this.trigger} />;
             case InputInterface.FIXED_STEP:
-                return <FixedState onClick={this.trigger} />;
+                return <FixedStep onClick={this.trigger} />;
             case InputInterface.VARIABLE_STEP:
                 return (
                     <VariableStep defaultStep={input.suggested_step!} max={input.max_value!} onTrigger={this.trigger} />
@@ -38,11 +45,29 @@ export default class Input extends Component<InputProps> {
             case InputInterface.SET_STATE:
                 return <SetState max={input.max_value!} onTrigger={this.trigger} />;
         }
-        console.log('no control!');
+        console.error('no control!');
+    }
+
+    private snippetForInterface(): ReactNode {
+        const { identifier, input } = this.props;
+        switch (input.interface) {
+            case InputInterface.ACTION:
+                return <ActionSnippetBlock controlIdentifier={identifier} input={input} />;
+            case InputInterface.FIXED_STEP:
+                return <FixedStepSnippetBlock controlIdentifier={identifier} input={input} />;
+            case InputInterface.VARIABLE_STEP:
+                return <VariableStepSnippetBlock controlIdentifier={identifier} input={input} />;
+            case InputInterface.SET_STATE:
+                return <SetStateSnippetBlock controlIdentifier={identifier} input={input} />;
+        }
+
+        console.error('no snippet!');
+
+        return <></>;
     }
 
     public render(): ReactNode {
-        const { input } = this.props;
+        const { input, showLiveData, showArduinoData } = this.props;
         return (
             <Grid
                 container
@@ -66,9 +91,20 @@ export default class Input extends Component<InputProps> {
                 <Grid item xs={2}>
                     <Typography variant={'body1'}>{input.interface}</Typography>
                 </Grid>
-                <Grid container item xs={12} md={8}>
-                    {this.controlForInterface()}
-                </Grid>
+                {showLiveData ? (
+                    <Grid container item xs={12} md={8}>
+                        {this.controlForInterface()}
+                    </Grid>
+                ) : (
+                    <></>
+                )}
+                {showArduinoData ? (
+                    <Grid container item xs={12}>
+                        {this.snippetForInterface()}
+                    </Grid>
+                ) : (
+                    <></>
+                )}
             </Grid>
         );
     }

@@ -137,6 +137,22 @@ export const api = {
         Settings.Instance.Theme = theme;
     },
 
+    getShowLiveData: (): boolean => {
+        return Settings.Instance.ShowLiveData;
+    },
+
+    setShowLiveData: (value: boolean) => {
+        Settings.Instance.ShowLiveData = value;
+    },
+
+    getShowArduinoData: (): boolean => {
+        return Settings.Instance.ShowArduinoData;
+    },
+
+    setShowArduinoData: (value: boolean) => {
+        Settings.Instance.ShowArduinoData = value;
+    },
+
     getSettingsJsonPath: (): string => {
         return Settings.Instance.JsonPath;
     },

@@ -1,8 +1,10 @@
 import {
     Box,
+    Checkbox,
     CircularProgress,
     Container,
     FormControl,
+    FormControlLabel,
     Grid,
     IconButton,
     InputLabel,
@@ -24,6 +26,10 @@ import { red } from '@mui/material/colors';
 export interface ControlReferenceProps {
     theme: PaletteMode;
     onThemeToggle: () => void;
+    onShowLiveDataToggle: () => void;
+    onShowArduinoCodeToggle: () => void;
+    showLiveData: boolean;
+    showArduinoData: boolean;
 }
 
 export interface ControlReferenceState {
@@ -135,7 +141,8 @@ export default class ControlReference extends Component<ControlReferenceProps, C
     }
 
     public render(): ReactNode {
-        const { theme, onThemeToggle } = this.props;
+        const { theme, onThemeToggle, onShowLiveDataToggle, onShowArduinoCodeToggle, showLiveData, showArduinoData } =
+            this.props;
         const { modules, moduleNames, activeModule, activeCategory, connectionStatus, hasLoadedModules } = this.state;
 
         const module = modules[activeModule];
@@ -189,10 +196,30 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
                     </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
+                        <FormControlLabel
+                            control={<Checkbox checked={showLiveData} onChange={onShowLiveDataToggle} name="live" />}
+                            label="Show live data"
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox checked={showArduinoData} onChange={onShowArduinoCodeToggle} name="arduino" />
+                            }
+                            label="Show arduino scaffold code"
+                        />
+                    </Grid>
                     <Grid item xs={12}>
                         {hasLoadedModules ? (
                             module ? (
-                                <Module module={module} moduleName={activeModule} categoryName={activeCategory} />
+                                <Module
+                                    module={module}
+                                    moduleName={activeModule}
+                                    categoryName={activeCategory}
+                                    showLiveData={showLiveData}
+                                    showArduinoData={showArduinoData}
+                                />
                             ) : (
                                 <Box
                                     sx={{
