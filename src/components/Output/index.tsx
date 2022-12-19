@@ -1,11 +1,12 @@
-import { Component, ReactNode } from 'react';
-import OutputItem from '../../@types/Output';
 import { Grid, Typography } from '@mui/material';
+import { Component, ReactNode } from 'react';
+
+import OutputItem from '../../@types/Output';
 import { OutputType } from '../../@types/OutputType';
-import IntegerOutput from './Integer';
-import StringOutput from './String';
 import IntegerSnippetBlock from '../Snippet/OutputSnippet/IntegerSnippetBlock';
 import StringSnippetBlock from '../Snippet/OutputSnippet/StringSnippetBlock';
+import IntegerOutput from './Integer';
+import StringOutput from './String';
 
 export interface OutputProps {
     identifier: string;

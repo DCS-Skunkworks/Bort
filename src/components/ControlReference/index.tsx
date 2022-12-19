@@ -1,3 +1,6 @@
+import { Check } from '@mui/icons-material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {
     Box,
     Checkbox,
@@ -15,13 +18,11 @@ import {
     SelectChangeEvent,
     Typography,
 } from '@mui/material';
+import { red } from '@mui/material/colors';
 import { Component, ReactNode } from 'react';
+
 import ModuleSet from '../../@types/ModuleSet';
 import Module from '../Module';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { Check } from '@mui/icons-material';
-import { red } from '@mui/material/colors';
 
 export interface ControlReferenceProps {
     theme: PaletteMode;

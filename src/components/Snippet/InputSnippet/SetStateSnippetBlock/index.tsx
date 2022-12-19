@@ -1,13 +1,14 @@
 import { Component, ReactNode } from 'react';
+
 import Input from '../../../../@types/Input';
+import InputSnippetBlock from '../index';
+import AnalogMultiPosSnippet from './AnalogMultiPosSnippet';
+import Matrix2PosSnippet from './Matrix2PosSnippet';
+import Matrix3PosSnippet from './Matrix3PosSnippet';
 import PotentiometerSnippet from './PotentiometerSnippet';
 import Switch2PosSnippet from './Switch2PosSnippet';
-import Matrix2PosSnippet from './Matrix2PosSnippet';
-import AnalogMultiPosSnippet from './AnalogMultiPosSnippet';
-import SwitchMultiPosSnippet from './SwitchMultiPosSnippet';
-import Matrix3PosSnippet from './Matrix3PosSnippet';
 import Switch3PosSnippet from './Switch3PosSnippet';
-import InputSnippetBlock from '../index';
+import SwitchMultiPosSnippet from './SwitchMultiPosSnippet';
 
 export interface SetStateSnippetBlockProps {
     controlIdentifier: string;

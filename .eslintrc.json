@@ -18,8 +18,9 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "plugins": ["react", "prettier", "@typescript-eslint"],
+    "plugins": ["react", "prettier", "@typescript-eslint", "simple-import-sort"],
     "rules": {
-        "react/prop-types": "off"
+        "react/prop-types": "off",
+        "simple-import-sort/imports": "error"
     }
 }

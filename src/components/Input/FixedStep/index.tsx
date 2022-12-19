@@ -1,6 +1,7 @@
-import { Component, ReactNode } from 'react';
-import ActionButton from '../Action';
 import { Grid } from '@mui/material';
+import { Component, ReactNode } from 'react';
+
+import ActionButton from '../Action';
 
 export interface FixedStateProps {
     onClick: (argument: string) => void;

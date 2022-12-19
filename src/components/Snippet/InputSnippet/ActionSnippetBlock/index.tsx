@@ -1,7 +1,8 @@
 import { Component, ReactNode } from 'react';
+
 import Input from '../../../../@types/Input';
-import ActionButtonSnippet from './ActionButtonSnippet';
 import InputSnippetBlock from '../index';
+import ActionButtonSnippet from './ActionButtonSnippet';
 
 export interface ActionSnippetBlockProps {
     controlIdentifier: string;

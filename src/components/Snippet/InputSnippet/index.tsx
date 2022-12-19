@@ -1,6 +1,7 @@
 import { Component, ReactNode } from 'react';
-import SnippetContainer from '../SnippetContainer';
+
 import Input from '../../../@types/Input';
+import SnippetContainer from '../SnippetContainer';
 import SnippetContainerHeaderItem from '../SnippetContainer/SnippetContainerHeader/SnippetContainerHeaderItem';
 
 export interface InputSnippetBlockProps {

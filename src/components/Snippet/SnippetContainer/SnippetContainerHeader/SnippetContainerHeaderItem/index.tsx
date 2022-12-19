@@ -1,7 +1,7 @@
-import { Component, ReactNode } from 'react';
-import { Theme } from '@mui/material/styles';
 import { Grid, Typography } from '@mui/material';
+import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
+import { Component, ReactNode } from 'react';
 
 export interface SnippetContainerHeaderItemProps {
     title: string;

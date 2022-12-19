@@ -1,6 +1,6 @@
-import { Component, ReactNode } from 'react';
 import { Grid, Typography } from '@mui/material';
 import { IpcRendererEvent } from 'electron';
+import { Component, ReactNode } from 'react';
 
 export interface StringOutputProps {
     address: number;

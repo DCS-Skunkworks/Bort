@@ -1,7 +1,8 @@
 import { Component, ReactNode } from 'react';
+
 import Input from '../../../../../@types/Input';
-import RotaryEncoderSnippet from '../RotaryEncoderSnippet';
 import InputSnippetBlock from '../../index';
+import RotaryEncoderSnippet from '../RotaryEncoderSnippet';
 
 export interface FixedStepSnippetBlockProps {
     controlIdentifier: string;

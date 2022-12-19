@@ -1,8 +1,9 @@
-import { Component, ReactNode } from 'react';
-import ControlSlider from '../Slider';
-import ActionButton from '../Action';
 import { Grid } from '@mui/material';
+import { Component, ReactNode } from 'react';
+
+import ActionButton from '../Action';
 import InputState from '../InputState';
+import ControlSlider from '../Slider';
 
 export interface SetStateProps {
     max: number;

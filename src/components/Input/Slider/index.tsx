@@ -1,6 +1,6 @@
-import { Component, ReactNode } from 'react';
-import { Slider } from '@mui/material';
 import { Mark } from '@mui/base/SliderUnstyled/';
+import { Slider } from '@mui/material';
+import { Component, ReactNode } from 'react';
 
 export interface SliderProps {
     value: number;

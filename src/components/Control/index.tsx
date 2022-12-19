@@ -1,12 +1,13 @@
 import { Divider, Grid, Stack } from '@mui/material';
-import { Component, ReactNode } from 'react';
-import ControlItem from '../../@types/Control';
-import Input from '../Input';
-import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
-import Output from '../Output';
-import IOContainer from '../IOContainer';
+import { SxProps } from '@mui/system';
+import { Component, ReactNode } from 'react';
+
+import ControlItem from '../../@types/Control';
 import ControlHeader from '../ControlHeader';
+import Input from '../Input';
+import IOContainer from '../IOContainer';
+import Output from '../Output';
 
 export interface ControlProps {
     moduleName: string;

@@ -1,12 +1,10 @@
 import { Component, ReactNode } from 'react';
-import SnippetContainer from '../../SnippetContainer';
+
 import Output from '../../../../@types/Output';
-import { OutputType } from '../../../../@types/OutputType';
-import LedSnippet from './LedSnippet';
-import IntegerBufferSnippet from './IntegerBufferSnippet';
-import Snippet from '../../index';
-import ServoSnippet from './ServoSnippet';
 import OutputSnippetBlock from '../index';
+import IntegerBufferSnippet from './IntegerBufferSnippet';
+import LedSnippet from './LedSnippet';
+import ServoSnippet from './ServoSnippet';
 
 export interface IntegerSnippetBlockProps {
     controlIdentifier: string;

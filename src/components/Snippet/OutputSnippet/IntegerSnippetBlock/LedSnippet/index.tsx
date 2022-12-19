@@ -1,7 +1,8 @@
 import { Component, ReactNode } from 'react';
-import Variable from '../../../Variable';
-import Snippet from '../../../index';
+
 import Output from '../../../../../@types/Output';
+import Snippet from '../../../index';
+import Variable from '../../../Variable';
 
 export interface LedSnippetProps {
     controlIdentifier: string;

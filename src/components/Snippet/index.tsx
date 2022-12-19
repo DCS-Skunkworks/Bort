@@ -1,9 +1,9 @@
+import CopyAll from '@mui/icons-material/CopyAll';
+import { Grid, IconButton } from '@mui/material';
+import { Theme } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 import { Component, ReactNode } from 'react';
 import * as ReactDOM from 'react-dom';
-import { Grid, IconButton } from '@mui/material';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
-import CopyAll from '@mui/icons-material/CopyAll';
 
 const snippetTheme: SxProps<Theme> = {
     borderWidth: '.1rem',

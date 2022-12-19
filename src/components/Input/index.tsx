@@ -1,15 +1,16 @@
+import { Grid, Typography } from '@mui/material';
 import { Component, ReactNode } from 'react';
+
 import InputItem from '../../@types/Input';
 import { InputInterface } from '../../@types/InputInterface';
-import ActionButton from './Action';
-import SetState from './SetState';
-import VariableStep from './VariableStep';
-import FixedStep from './FixedStep';
-import { Grid, Typography } from '@mui/material';
-import FixedStepSnippetBlock from '../Snippet/InputSnippet/StepSnippetBlock/FixedStepSnippetBlock';
-import VariableStepSnippetBlock from '../Snippet/InputSnippet/StepSnippetBlock/VariableStepSnippetBlock';
 import ActionSnippetBlock from '../Snippet/InputSnippet/ActionSnippetBlock';
 import SetStateSnippetBlock from '../Snippet/InputSnippet/SetStateSnippetBlock';
+import FixedStepSnippetBlock from '../Snippet/InputSnippet/StepSnippetBlock/FixedStepSnippetBlock';
+import VariableStepSnippetBlock from '../Snippet/InputSnippet/StepSnippetBlock/VariableStepSnippetBlock';
+import ActionButton from './Action';
+import FixedStep from './FixedStep';
+import SetState from './SetState';
+import VariableStep from './VariableStep';
 
 export interface InputProps {
     identifier: string;

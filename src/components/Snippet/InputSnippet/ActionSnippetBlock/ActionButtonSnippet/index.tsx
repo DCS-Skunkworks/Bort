@@ -1,7 +1,8 @@
 import { Component, ReactNode } from 'react';
+
 import Input from '../../../../../@types/Input';
-import Variable from '../../../Variable';
 import Snippet from '../../../index';
+import Variable from '../../../Variable';
 
 export interface ActionButtonSnippetProps {
     controlIdentifier: string;

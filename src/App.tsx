@@ -1,7 +1,8 @@
-import ControlReference from './components/ControlReference';
 import { Box, createTheme, PaletteMode, responsiveFontSizes, ThemeOptions, ThemeProvider } from '@mui/material';
 import { blue, green } from '@mui/material/colors';
 import React, { Component } from 'react';
+
+import ControlReference from './components/ControlReference';
 
 const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
     palette: {

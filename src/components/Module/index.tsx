@@ -1,7 +1,8 @@
 import { Stack } from '@mui/material';
 import { Component, ReactNode } from 'react';
-import Category from '../Category';
+
 import Aircraft from '../../@types/Aircraft';
+import Category from '../Category';
 
 export interface ModuleProps {
     moduleName: string;

@@ -1,8 +1,9 @@
-import { Component, ReactNode } from 'react';
-import ActionButton from '../Action';
 import { Grid } from '@mui/material';
-import ControlSlider from '../Slider';
+import { Component, ReactNode } from 'react';
+
+import ActionButton from '../Action';
 import InputState from '../InputState';
+import ControlSlider from '../Slider';
 
 export interface VariableStepProps {
     defaultStep: number;

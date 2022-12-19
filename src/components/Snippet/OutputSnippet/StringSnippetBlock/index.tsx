@@ -1,7 +1,8 @@
 import { Component, ReactNode } from 'react';
+
 import Output from '../../../../@types/Output';
-import StringBufferSnippet from './StringBufferSnippet';
 import OutputSnippetBlock from '../index';
+import StringBufferSnippet from './StringBufferSnippet';
 
 export interface StringSnippetBlockProps {
     controlIdentifier: string;

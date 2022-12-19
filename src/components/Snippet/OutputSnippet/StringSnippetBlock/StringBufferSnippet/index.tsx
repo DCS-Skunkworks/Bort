@@ -1,6 +1,7 @@
 import { Component, ReactNode } from 'react';
-import Snippet from '../../../index';
+
 import Output from '../../../../../@types/Output';
+import Snippet from '../../../index';
 
 export interface StringBufferSnippetProps {
     controlIdentifier: string;

@@ -1,7 +1,7 @@
-import { Component, ReactNode } from 'react';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
 import { Typography } from '@mui/material';
+import { Theme } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
+import { Component, ReactNode } from 'react';
 
 interface VariableProps {
     children: ReactNode;

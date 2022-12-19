@@ -1,7 +1,8 @@
+import { Stack, Typography } from '@mui/material';
 import { Component, ReactNode } from 'react';
+
 import CategoryItem from '../../@types/Category';
 import Control from '../Control';
-import { Stack, Typography } from '@mui/material';
 
 export interface CategoryProps {
     moduleName: string;

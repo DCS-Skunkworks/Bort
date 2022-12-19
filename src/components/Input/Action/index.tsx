@@ -1,5 +1,5 @@
-import { Component, ReactNode } from 'react';
 import { Button } from '@mui/material';
+import { Component, ReactNode } from 'react';
 
 export interface ActionButtonProps {
     text: string;

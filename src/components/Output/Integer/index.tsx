@@ -1,7 +1,7 @@
-import { Component, ReactNode } from 'react';
-import { Grid, Typography } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { Grid, Typography } from '@mui/material';
 import { IpcRendererEvent } from 'electron';
+import { Component, ReactNode } from 'react';
 
 export interface IntegerOutputProps {
     address: number;

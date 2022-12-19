@@ -1,6 +1,7 @@
 import { Component, ReactNode } from 'react';
-import Variable from '../../../Variable';
+
 import Snippet from '../../../index';
+import Variable from '../../../Variable';
 
 export interface Switch3PosSnippetProps {
     controlIdentifier: string;

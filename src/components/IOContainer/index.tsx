@@ -1,7 +1,7 @@
 import { Divider, Grid, Stack, Typography } from '@mui/material';
-import { Component, ReactNode } from 'react';
-import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
+import { Component, ReactNode } from 'react';
 
 export interface IOContainerProps {
     text: 'Input' | 'Output';
