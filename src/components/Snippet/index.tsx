@@ -19,6 +19,36 @@ const snippetTheme: SxProps<Theme> = {
     overflowX: 'auto',
 };
 
+const copyButtonStyle: SxProps<Theme> = {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    opacity: 0.4,
+    ':hover': { opacity: 1 },
+    '@keyframes confirm': {
+        '0%': {
+            color: 'default',
+        },
+        '30%': {
+            color: theme => theme.palette.success.main,
+        },
+        '50%': {
+            color: theme => theme.palette.success.main,
+        },
+        '100%': {
+            color: 'default',
+        },
+    },
+    ':focus': {
+        animationName: 'confirm',
+        animationDuration: '1s',
+        animationDirection: 'alternate',
+    },
+    ':active': {
+        animation: 'none',
+    },
+};
+
 interface SnippetProps {
     children: ReactNode;
 }
@@ -58,12 +88,7 @@ export default class Snippet extends Component<SnippetProps> {
     public render(): ReactNode {
         return (
             <Grid item sx={snippetTheme} xs={12}>
-                <IconButton
-                    sx={{ position: 'absolute', top: 0, right: 0, opacity: 0.4, ':hover': { opacity: 1 } }}
-                    aria-label="copy"
-                    size="small"
-                    onClick={this.onCopyClick}
-                >
+                <IconButton sx={copyButtonStyle} aria-label="copy" size="small" onClick={this.onCopyClick}>
                     <CopyAll />
                 </IconButton>
                 {this.props.children}
