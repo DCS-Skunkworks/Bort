@@ -24,11 +24,11 @@ export default class Category extends Component<CategoryProps> {
                 <Typography variant={'h2'}>{categoryName}</Typography>
                 {Object.entries(category)
                     .sort((e1, e2) => e1[0].localeCompare(e2[0]))
-                    .map((e, i) => (
+                    .map(e => (
                         <Control
                             moduleName={moduleName}
                             control={e[1]}
-                            key={i}
+                            key={e[1].identifier}
                             showLiveData={showLiveData}
                             showArduinoData={showArduinoData}
                         />

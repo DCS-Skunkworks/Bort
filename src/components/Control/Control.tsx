@@ -53,11 +53,11 @@ export default class Control extends Component<ControlProps> {
                 <Grid container className="control-body">
                     {hasInputs && (
                         <IOContainer text={'Input'}>
-                            {control.inputs.map((x, i) => (
+                            {control.inputs.map(x => (
                                 <Input
                                     identifier={control.identifier}
                                     input={x}
-                                    key={i}
+                                    key={x.interface}
                                     showLiveData={showLiveData}
                                     showArduinoData={showArduinoData}
                                 />
@@ -66,11 +66,11 @@ export default class Control extends Component<ControlProps> {
                     )}
                     {hasOutputs && (
                         <IOContainer text={'Output'}>
-                            {control.outputs.map((x, i) => (
+                            {control.outputs.map(x => (
                                 <Output
                                     identifier={control.identifier}
                                     output={x}
-                                    key={i}
+                                    key={x.type}
                                     showLiveData={showLiveData}
                                     showArduinoData={showArduinoData}
                                 />
