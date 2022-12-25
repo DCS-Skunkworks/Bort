@@ -8,7 +8,6 @@ import {
     Container,
     FormControl,
     FormControlLabel,
-    Grid,
     IconButton,
     InputLabel,
     LinearProgress,
@@ -19,6 +18,7 @@ import {
     Typography,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
+import Grid from '@mui/system/Unstable_Grid';
 import { Component, ReactNode } from 'react';
 
 import ModuleSet from '../../@types/ModuleSet';
@@ -191,7 +191,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                 }}
             >
                 <Grid container spacing={2}>
-                    <Grid item xs={12} sm={4}>
+                    <Grid xs={12} sm={4}>
                         <FormControl fullWidth>
                             <InputLabel>Module</InputLabel>
                             <Select value={activeModule} label={'Module'} onChange={this.changeModule}>
@@ -203,7 +203,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={8} md={4}>
+                    <Grid xs={12} sm={8} md={4}>
                         <FormControl fullWidth>
                             <InputLabel>Category</InputLabel>
                             <Select value={activeCategory} label={'Category'} onChange={this.changeCategory}>
@@ -217,25 +217,24 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={2} md={1} className={'valign-wrapper'}>
+                    <Grid xs={2} md={1} className={'valign-wrapper'}>
                         {connectionStatus ? <Check /> : <CircularProgress />}
                     </Grid>
-                    <Grid item xs={4} md={2} className={'valign-wrapper'}>
+                    <Grid xs={4} md={2} className={'valign-wrapper'}>
                         <Typography variant={'body1'}>{connectionStatus ? 'Connected!' : 'Connecting...'}</Typography>
                     </Grid>
-                    <Grid xs={4} sm={5} md />
-                    <Grid item xs={2} sm={1} className={'valign-wrapper'}>
+                    <Grid xs={2} xsOffset={'auto'} sm={1} className={'valign-wrapper'}>
                         <IconButton onClick={onThemeToggle} color="inherit">
                             {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
+                    <Grid xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
                         <FormControlLabel
                             control={<Checkbox checked={showLiveData} onChange={onShowLiveDataToggle} name="live" />}
                             label="Show live data"
                         />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
+                    <Grid xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
                         <FormControlLabel
                             control={
                                 <Checkbox checked={showArduinoData} onChange={onShowArduinoCodeToggle} name="arduino" />
@@ -243,7 +242,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             label="Show arduino scaffold code"
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid xs={12}>
                         {hasLoadedModules ? (
                             module ? (
                                 <Module
