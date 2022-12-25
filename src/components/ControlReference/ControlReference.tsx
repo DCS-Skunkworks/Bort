@@ -82,15 +82,38 @@ export default class ControlReference extends Component<ControlReferenceProps, C
         const moduleNames = await window.Main.getModules();
         const modules = await window.Main.getModuleData(moduleNames);
 
-        const activeModuleName = moduleNames.includes('MetadataEnd') ? 'MetadataEnd' : '';
-        const activeModule = modules[activeModuleName];
+        const lastModule = window.Main.getLastModule();
+        let activeModuleName: string;
         let activeCategoryName = '';
-        if (activeModule !== null && activeModule !== undefined) {
-            const activeCategory = activeModule['Metadata'];
-            if (activeCategory !== null && activeCategory !== undefined) {
-                activeCategoryName = 'Metadata';
+
+        if (moduleNames.includes(lastModule)) {
+            activeModuleName = lastModule;
+            const lastCategoryName = window.Main.getLastCategory();
+            const activeModule = modules[activeModuleName];
+            if (activeModule[lastCategoryName] !== undefined) {
+                activeCategoryName = lastCategoryName;
+            } else {
+                console.warn('unable to find category', lastCategoryName, 'in', activeModule);
+                activeCategoryName = Object.entries(activeModule)[0][0];
+            }
+        } else {
+            console.warn('unable to find module', lastModule, 'in', moduleNames);
+            activeModuleName = moduleNames.includes('MetadataEnd') ? 'MetadataEnd' : '';
+            const activeModule = modules[activeModuleName];
+            if (activeModule !== null && activeModule !== undefined) {
+                const activeCategory = activeModule['Metadata'];
+                if (activeCategory !== null && activeCategory !== undefined) {
+                    activeCategoryName = 'Metadata';
+                } else {
+                    console.error('unable to load default Metadata category', activeModule);
+                }
+            } else {
+                console.error('unable to load default MetadataEnd module', modules);
             }
         }
+
+        window.Main.setLastModule(activeModuleName);
+        window.Main.setLastCategory(activeCategoryName);
 
         this.setState({
             moduleNames: moduleNames,
@@ -106,10 +129,14 @@ export default class ControlReference extends Component<ControlReferenceProps, C
         this.updateModules().then(r => r);
     }
 
-    private updateConnectionStatus(status: boolean) {
+    private async updateConnectionStatus(status: boolean) {
         this.setState({
             connectionStatus: status,
         });
+
+        if (status) {
+            await this.updateModules();
+        }
 
         if (!status && !this.awaitingConnectionAttempt) {
             this.awaitingConnectionAttempt = true;
@@ -127,15 +154,20 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             const newModuleName = event.target.value;
             const newModule = this.state.modules[newModuleName];
             const firstCategory = Object.entries(newModule)[0];
-            const firstCategoryName = firstCategory[0];
+            const newCategory = firstCategory[0];
+
+            window.Main.setLastCategory(newCategory);
+            window.Main.setLastModule(newModuleName);
+
             this.setState({
                 activeModule: newModuleName,
-                activeCategory: firstCategoryName,
+                activeCategory: newCategory,
             });
         }
     }
 
     private changeCategory(event: SelectChangeEvent) {
+        window.Main.setLastCategory(event.target.value);
         this.setState({
             activeCategory: event.target.value,
         });

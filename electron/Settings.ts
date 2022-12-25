@@ -1,11 +1,13 @@
-import Store from 'electron-store';
 import { PaletteMode } from '@mui/material';
+import Store from 'electron-store';
 
 interface SettingsSchema {
     theme: PaletteMode;
     jsonPath: string;
     showLiveData: boolean;
     showArduinoData: boolean;
+    lastModule: string;
+    lastCategory: string;
 }
 
 export default class Settings {
@@ -19,10 +21,12 @@ export default class Settings {
                 theme: 'light',
                 jsonPath: '%USERPROFILE%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json'.replace(
                     /%([^%]+)%/g,
-                    (_, n) => process.env[n] ?? ""
+                    (_, n) => process.env[n] ?? '',
                 ),
                 showLiveData: true,
                 showArduinoData: false,
+                lastModule: 'MetadataEnd',
+                lastCategory: 'Metadata',
             },
         });
     }
@@ -47,7 +51,7 @@ export default class Settings {
 
     public set ShowLiveData(newValue: boolean) {
         this.store.set({
-            showLiveData: newValue
+            showLiveData: newValue,
         });
     }
 
@@ -57,7 +61,7 @@ export default class Settings {
 
     public set ShowArduinoData(newValue: boolean) {
         this.store.set({
-            showArduinoData: newValue
+            showArduinoData: newValue,
         });
     }
 
@@ -68,6 +72,26 @@ export default class Settings {
     public set JsonPath(newPath: string) {
         this.store.set({
             jsonPath: newPath,
+        });
+    }
+
+    public get LastModule(): string {
+        return this.store.get('lastModule');
+    }
+
+    public set LastModule(newPath: string) {
+        this.store.set({
+            lastModule: newPath,
+        });
+    }
+
+    public get LastCategory(): string {
+        return this.store.get('lastCategory');
+    }
+
+    public set LastCategory(newPath: string) {
+        this.store.set({
+            lastCategory: newPath,
         });
     }
 }

@@ -1,8 +1,9 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import ModuleSet from '../src/@types/ModuleSet';
-import { promises as fs } from 'fs';
-import Settings from './Settings';
 import { PaletteMode } from '@mui/material';
+import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { promises as fs } from 'fs';
+
+import ModuleSet from '../src/@types/ModuleSet';
+import Settings from './Settings';
 
 interface AircraftData {
     [name: string]: string[];
@@ -159,6 +160,22 @@ export const api = {
 
     setSettingsJsonPath: (path: string) => {
         Settings.Instance.JsonPath = path;
+    },
+
+    getLastModule: (): string => {
+        return Settings.Instance.LastModule;
+    },
+
+    setLastModule: (path: string) => {
+        Settings.Instance.LastModule = path;
+    },
+
+    getLastCategory: (): string => {
+        return Settings.Instance.LastCategory;
+    },
+
+    setLastCategory: (path: string) => {
+        Settings.Instance.LastCategory = path;
     },
 };
 
