@@ -20,12 +20,18 @@ export default class IntegerSnippetBlock extends Component<IntegerSnippetBlockPr
 
     private *snippetsForInput(): Iterable<ReactNode> {
         const { controlIdentifier, output } = this.props;
-        yield <IntegerBufferSnippet controlIdentifier={controlIdentifier} output={output} />;
+        yield (
+            <IntegerBufferSnippet
+                controlIdentifier={controlIdentifier}
+                output={output}
+                key={'integer-buffer-snippet'}
+            />
+        );
 
         if (output.max_value == 1) {
-            yield <LedSnippet controlIdentifier={controlIdentifier} output={output} />;
+            yield <LedSnippet controlIdentifier={controlIdentifier} output={output} key={'led-snippet'} />;
         } else if (output.max_value == 65535) {
-            yield <ServoSnippet controlIdentifier={controlIdentifier} output={output} />;
+            yield <ServoSnippet controlIdentifier={controlIdentifier} output={output} key={'servo-snippet'} />;
         }
     }
 
