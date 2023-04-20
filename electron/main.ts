@@ -2,8 +2,10 @@ import { app, BrowserWindow, dialog, ipcMain, Menu, MenuItem } from 'electron';
 import * as net from 'net';
 import ProtocolParser from './ProtocolParser';
 import Store from 'electron-store';
+import Settings from './Settings';
 
 let mainWindow: BrowserWindow | null;
+let isAlwaysOnTopChecked: boolean = Settings.Instance.AlwaysOnTop;
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -48,7 +50,7 @@ function createWindow() {
                                 properties: ['openDirectory'],
                                 defaultPath: '%USERPROFILE%/Saved Games/'.replace(
                                     /%([^%]+)%/g,
-                                    (_, n) => process.env[n] ?? ""
+                                    (_, n) => process.env[n] ?? '',
                                 ),
                             })
                             .then(function (fileObj) {
@@ -61,6 +63,16 @@ function createWindow() {
                             .catch(function (err) {
                                 console.error(err);
                             });
+                    },
+                },
+                {
+                    label: 'Always on Top',
+                    type: 'checkbox',
+                    checked: isAlwaysOnTopChecked,
+                    click(menuItem, browserWindow) {
+                        Settings.Instance.AlwaysOnTop = !Settings.Instance.AlwaysOnTop;
+                        browserWindow.setAlwaysOnTop(Settings.Instance.AlwaysOnTop);
+                        isAlwaysOnTopChecked = Settings.Instance.AlwaysOnTop;
                     },
                 },
                 {
@@ -78,7 +90,7 @@ function createWindow() {
     Menu.setApplicationMenu(menu);
 
     mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-    mainWindow.setAlwaysOnTop(true);
+    mainWindow.setAlwaysOnTop(isAlwaysOnTopChecked);
     mainWindow.on('closed', () => {
         mainWindow = null;
     });

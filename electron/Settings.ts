@@ -8,6 +8,7 @@ interface SettingsSchema {
     showArduinoData: boolean;
     lastModule: string;
     lastCategory: string;
+    alwaysOnTop: boolean;
 }
 
 export default class Settings {
@@ -27,6 +28,7 @@ export default class Settings {
                 showArduinoData: false,
                 lastModule: 'MetadataEnd',
                 lastCategory: 'Metadata',
+                alwaysOnTop: true,
             },
         });
     }
@@ -92,6 +94,16 @@ export default class Settings {
     public set LastCategory(newPath: string) {
         this.store.set({
             lastCategory: newPath,
+        });
+    }
+
+    public get AlwaysOnTop(): boolean {
+        return this.store.get('alwaysOnTop');
+    }
+
+    public set AlwaysOnTop(newValue: boolean) {
+        this.store.set({
+            alwaysOnTop: newValue,
         });
     }
 }
