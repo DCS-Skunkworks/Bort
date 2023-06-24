@@ -1,15 +1,14 @@
-import { Check } from '@mui/icons-material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {
     Box,
     Checkbox,
-    CircularProgress,
     Container,
     FormControl,
     FormControlLabel,
     IconButton,
     InputLabel,
+    keyframes,
     LinearProgress,
     MenuItem,
     PaletteMode,
@@ -18,11 +17,15 @@ import {
     Typography,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
+import { Theme } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 import Grid from '@mui/system/Unstable_Grid';
 import { Component, ReactNode } from 'react';
 
 import ModuleSet from '../../@types/ModuleSet';
+import { OutputType } from '../../@types/OutputType';
 import Module from '../Module/Module';
+import StringParser from '../Output/String/StringParser';
 
 export interface ControlReferenceProps {
     theme: PaletteMode;
@@ -38,12 +41,48 @@ export interface ControlReferenceState {
     modules: ModuleSet;
     activeModule: string;
     activeCategory: string;
-    connectionStatus: boolean;
+    connected: boolean;
+    attemptingReconnection: boolean;
     hasLoadedModules: boolean;
+    version: string;
 }
+
+function buildPulsar(r: number, g: number, b: number): SxProps<Theme> {
+    const pulse = keyframes`
+0% {
+    transform: scale(0.90);
+    box-shadow: 0 0 0 0 rgba(${r}, ${g}, ${b}, 0.7);
+}
+
+70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 1rem rgba(${r}, ${g}, ${b}, 0);
+}
+
+100% {
+    transform: scale(0.90);
+    box-shadow: 0 0 0 0 rgba(${r}, ${g}, ${b}, 0);
+}`;
+
+    return {
+        bgcolor: `rgb(${r}, ${g}, ${b})`,
+        borderRadius: '50%',
+        margin: '1rem',
+        height: '1rem',
+        width: '1rem',
+        boxShadow: `0 0 0 0 #000000`,
+        transform: 'scale(1)',
+        animation: `${pulse} 2s infinite`,
+    };
+}
+
+const connectedPulsar = buildPulsar(16, 201, 122);
+const reconnectingPulsar = buildPulsar(255, 196, 94);
+const disconnectedPulsar = buildPulsar(255, 103, 97);
 
 export default class ControlReference extends Component<ControlReferenceProps, ControlReferenceState> {
     private awaitingConnectionAttempt = false;
+    private parser?: StringParser;
 
     public constructor(props: ControlReferenceProps) {
         super(props);
@@ -53,8 +92,10 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             modules: {},
             activeModule: '',
             activeCategory: '',
-            connectionStatus: false,
+            connected: false,
+            attemptingReconnection: true,
             hasLoadedModules: false,
+            version: '',
         };
 
         this.retryConnection = this.retryConnection.bind(this);
@@ -63,15 +104,20 @@ export default class ControlReference extends Component<ControlReferenceProps, C
         this.updateModules = this.updateModules.bind(this);
         this.updateJsonPath = this.updateJsonPath.bind(this);
         this.updateConnectionStatus = this.updateConnectionStatus.bind(this);
+        this.versionUpdated = this.versionUpdated.bind(this);
     }
 
-    public async componentDidMount() {
+    public override async componentDidMount(): Promise<void> {
         await this.updateModules();
 
         window.Main.on('new-json-path', this.updateJsonPath);
         window.Main.on('bios-connection-status', this.updateConnectionStatus);
 
         window.Main.pollBiosConnection();
+    }
+
+    public override async componentWillUnmount(): Promise<void> {
+        this.parser?.stop();
     }
 
     private async updateModules() {
@@ -118,13 +164,32 @@ export default class ControlReference extends Component<ControlReferenceProps, C
         window.Main.setLastModule(activeModuleName);
         window.Main.setLastCategory(activeCategoryName);
 
-        this.setState({
-            moduleNames: moduleNames,
-            modules: modules,
-            activeModule: activeModuleName,
-            activeCategory: activeCategoryName,
-            hasLoadedModules: true,
-        });
+        this.setState(
+            {
+                moduleNames: moduleNames,
+                modules: modules,
+                activeModule: activeModuleName,
+                activeCategory: activeCategoryName,
+                hasLoadedModules: true,
+            },
+            () => {
+                this.parser?.stop();
+                const versionData = this.state.modules['CommonData']?.['Metadata']?.['DCS_BIOS']?.outputs.filter(
+                    o => o.type === OutputType.STRING,
+                )[0];
+                if (versionData !== undefined && versionData.max_length !== undefined) {
+                    this.parser = new StringParser(versionData.address, versionData.max_length, version => {
+                        this.setState(
+                            {
+                                version: version,
+                            },
+                            this.versionUpdated,
+                        );
+                    });
+                    this.parser.start();
+                }
+            },
+        );
     }
 
     private updateJsonPath(path: string) {
@@ -134,7 +199,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
 
     private async updateConnectionStatus(status: boolean) {
         this.setState({
-            connectionStatus: status,
+            connected: status,
         });
 
         if (status) {
@@ -176,10 +241,37 @@ export default class ControlReference extends Component<ControlReferenceProps, C
         });
     }
 
+    private heartbeat?: NodeJS.Timeout;
+    private versionUpdated(): void {
+        clearTimeout(this.heartbeat);
+        this.heartbeat = setTimeout(
+            () =>
+                this.setState({
+                    attemptingReconnection: true,
+                }),
+            1000,
+        );
+
+        if (this.state.attemptingReconnection) {
+            this.setState({
+                attemptingReconnection: false,
+            });
+        }
+    }
+
     public render(): ReactNode {
         const { theme, onThemeToggle, onShowLiveDataToggle, onShowArduinoCodeToggle, showLiveData, showArduinoData } =
             this.props;
-        const { modules, moduleNames, activeModule, activeCategory, connectionStatus, hasLoadedModules } = this.state;
+        const {
+            modules,
+            moduleNames,
+            activeModule,
+            activeCategory,
+            connected,
+            attemptingReconnection,
+            hasLoadedModules,
+            version,
+        } = this.state;
 
         const module = modules[activeModule];
         const hasModule = module !== null && module !== undefined;
@@ -221,10 +313,20 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                         </FormControl>
                     </Grid>
                     <Grid xs={2} md={1} className={'valign-wrapper'}>
-                        {connectionStatus ? <Check /> : <CircularProgress />}
+                        <Box
+                            sx={
+                                connected
+                                    ? attemptingReconnection
+                                        ? reconnectingPulsar
+                                        : connectedPulsar
+                                    : disconnectedPulsar
+                            }
+                        ></Box>
                     </Grid>
                     <Grid xs={4} md={2} className={'valign-wrapper'}>
-                        <Typography variant={'body1'}>{connectionStatus ? 'Connected!' : 'Connecting...'}</Typography>
+                        <Typography variant={'body1'}>
+                            {connected ? <>dcs-bios {version}</> : 'Connecting...'}
+                        </Typography>
                     </Grid>
                     <Grid xs={2} xsOffset={'auto'} sm={1} className={'valign-wrapper'}>
                         <IconButton onClick={onThemeToggle} color="inherit">
