@@ -41,12 +41,18 @@ export const api = {
     /**
      * Provide an easier way to listen to events
      */
-    onBiosReceive: (callback: (event: IpcRendererEvent, address: number, data: Uint16Array) => void) => {
-        ipcRenderer.on('receive-from-bios', callback);
+    onBiosReceive: (
+        address: number,
+        callback: (event: IpcRendererEvent, address: number, data: Uint16Array) => void,
+    ) => {
+        ipcRenderer.on(`receive-from-bios-${address}`, callback);
     },
 
-    stopBiosListening: (callback: (event: IpcRendererEvent, address: number, data: Uint16Array) => void) => {
-        ipcRenderer.off('receive-from-bios', callback);
+    stopBiosListening: (
+        address: number,
+        callback: (event: IpcRendererEvent, address: number, data: Uint16Array) => void,
+    ) => {
+        ipcRenderer.off(`receive-from-bios-${address}`, callback);
     },
 
     getModules: async (): Promise<string[]> => {

@@ -1,6 +1,7 @@
 import { Grid, Typography } from '@mui/material';
-import { IpcRendererEvent } from 'electron';
 import { Component, ReactNode } from 'react';
+
+import StringParser from './StringParser';
 
 export interface StringOutputProps {
     address: number;
@@ -9,55 +10,32 @@ export interface StringOutputProps {
 
 export interface StringOutputState {
     currentValue: string;
-    stringBuffer: ArrayBuffer;
-    stringBuffer_uint8: Uint8Array;
 }
 
 export default class StringOutput extends Component<StringOutputProps, StringOutputState> {
+    private readonly parser: StringParser;
+
     public constructor(props: StringOutputProps) {
         super(props);
-        const stringBuffer = new ArrayBuffer(props.maxLength);
+        this.updateValue = this.updateValue.bind(this);
+        this.parser = new StringParser(this.props.address, this.props.maxLength, this.updateValue);
+
         this.state = {
             currentValue: '',
-            stringBuffer: stringBuffer,
-            stringBuffer_uint8: new Uint8Array(stringBuffer),
         };
-
-        this.onReceive = this.onReceive.bind(this);
-        this.updateValue = this.updateValue.bind(this);
     }
 
     public componentDidMount() {
-        window.Main.onBiosReceive(this.onReceive);
+        this.parser.start();
     }
 
-    // public componentWillUnmount() {
-    //     window.Main.stopBiosListening(this.onReceive);
-    // }
-
-    private onReceive(event: IpcRendererEvent, address: number, data: Uint16Array) {
-        if (address >= this.props.address && this.props.address + this.props.maxLength > address) {
-            this.updateValue(address, data);
-        }
+    public componentWillUnmount() {
+        this.parser.stop();
     }
 
-    private updateValue(calledAddress: number, data: Uint16Array) {
-        const { address, maxLength } = this.props;
-        const { stringBuffer, stringBuffer_uint8 } = this.state;
-        const data_uint8 = new Uint8Array(data.buffer);
-        stringBuffer_uint8[calledAddress - address] = data_uint8[0];
-        if (address + maxLength > calledAddress + 1) {
-            stringBuffer_uint8[calledAddress - address + 1] = data_uint8[1];
-        }
-
-        let str = '';
-        for (let i = 0; i < stringBuffer.byteLength; i++) {
-            if (stringBuffer_uint8[i] == 0) break;
-            str = str + String.fromCharCode(stringBuffer_uint8[i]);
-        }
-
+    private updateValue(newValue: string) {
         this.setState({
-            currentValue: str,
+            currentValue: newValue,
         });
     }
 

@@ -1,7 +1,8 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, MenuItem } from 'electron';
-import * as net from 'net';
-import ProtocolParser from './ProtocolParser';
 import Store from 'electron-store';
+import * as net from 'net';
+
+import ProtocolParser from './ProtocolParser';
 import Settings from './Settings';
 
 let mainWindow: BrowserWindow | null;
@@ -71,7 +72,7 @@ function createWindow() {
                     checked: isAlwaysOnTopChecked,
                     click(menuItem, browserWindow) {
                         Settings.Instance.AlwaysOnTop = !Settings.Instance.AlwaysOnTop;
-                        browserWindow.setAlwaysOnTop(Settings.Instance.AlwaysOnTop);
+                        browserWindow?.setAlwaysOnTop(Settings.Instance.AlwaysOnTop);
                         isAlwaysOnTopChecked = Settings.Instance.AlwaysOnTop;
                     },
                 },
@@ -94,8 +95,9 @@ function createWindow() {
     mainWindow.on('closed', () => {
         mainWindow = null;
     });
-    protocolParser = new ProtocolParser((address, data) => {
-        mainWindow?.webContents?.send('receive-from-bios', address[0], data);
+    protocolParser = new ProtocolParser((addressArray, data) => {
+        const address = addressArray[0];
+        mainWindow?.webContents?.send(`receive-from-bios-${address}`, address, data);
     });
 
     socketClient = new net.Socket();

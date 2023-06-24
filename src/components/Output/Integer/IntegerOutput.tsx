@@ -1,7 +1,8 @@
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { Grid, Typography } from '@mui/material';
-import { IpcRendererEvent } from 'electron';
 import { Component, ReactNode } from 'react';
+
+import IntegerParser from './IntegerParser';
 
 export interface IntegerOutputProps {
     address: number;
@@ -15,29 +16,24 @@ export interface IntegerOutputState {
 }
 
 export default class IntegerOutput extends Component<IntegerOutputProps, IntegerOutputState> {
+    private readonly parser: IntegerParser;
+
     public constructor(props: IntegerOutputProps) {
         super(props);
+        this.updateValue = this.updateValue.bind(this);
+        this.parser = new IntegerParser(this.props.address, this.props.mask, this.props.shiftBy, this.updateValue);
 
         this.state = {
             currentValue: 0,
         };
-
-        this.onReceive = this.onReceive.bind(this);
-        this.updateValue = this.updateValue.bind(this);
     }
 
     public componentDidMount() {
-        window.Main.onBiosReceive(this.onReceive);
+        this.parser.start();
     }
 
-    // public componentWillUnmount() {
-    //     window.Main.stopBiosListening(this.onReceive);
-    // }
-
-    private onReceive(event: IpcRendererEvent, address: number, data: Uint16Array) {
-        if (address === this.props.address) {
-            this.updateValue(data[0]);
-        }
+    public componentWillUnmount() {
+        this.parser.stop();
     }
 
     private updateValue(data: number) {
