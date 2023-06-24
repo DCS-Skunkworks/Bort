@@ -79,8 +79,11 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             hasLoadedModules: false,
         });
 
-        const moduleNames = await window.Main.getModules();
+        let moduleNames = await window.Main.getModules();
         const modules = await window.Main.getModuleData(moduleNames);
+
+        // if something didn't load, just filter it out
+        moduleNames = moduleNames.filter(n => modules[n] !== undefined);
 
         const lastModule = window.Main.getLastModule();
         let activeModuleName: string;

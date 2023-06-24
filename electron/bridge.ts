@@ -82,8 +82,14 @@ export const api = {
         const modules: ModuleSet = {};
 
         for (const n of moduleNames) {
-            const buffer = await fs.readFile(getFileFromRoot(`${n}.json`));
-            modules[n] = JSON.parse(buffer.toString());
+            const jsonFileName = `${n}.json`;
+            try {
+                const buffer = await fs.readFile(getFileFromRoot(jsonFileName));
+                modules[n] = JSON.parse(buffer.toString());
+            } catch (e) {
+                // just continue, it's _probably_ not a big deal?
+                console.warn(`error reading file: ${jsonFileName}`, e);
+            }
         }
 
         return modules;
