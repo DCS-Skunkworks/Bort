@@ -1,24 +1,24 @@
-import { IpcRendererEvent } from 'electron';
-
 export default class IntegerParser {
+    private listenerStopper?: () => void;
+
     public constructor(
         private readonly address: number,
         private readonly mask: number,
         private readonly shiftBy: number,
         private readonly updateCallback: (value: number) => void,
     ) {
-        this.onReceive = this.onReceive.bind(this);
+        this.listener = this.listener.bind(this);
     }
 
     public start() {
-        window.Main.onBiosReceive(this.address, this.onReceive);
+        this.listenerStopper = window.Main.onBiosReceive(this.address, this.listener);
     }
 
     public stop() {
-        window.Main.stopBiosListening(this.address, this.onReceive);
+        this.listenerStopper?.();
     }
 
-    private onReceive(event: IpcRendererEvent, address: number, data: Uint16Array) {
+    private readonly listener = (address: number, data: Uint16Array) => {
         this.updateCallback((data[0] & this.mask) >> this.shiftBy);
-    }
+    };
 }

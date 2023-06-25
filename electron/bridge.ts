@@ -18,6 +18,9 @@ function getFileFromRoot(file: string): string {
     return `${Settings.Instance.JsonPath}\\${file}`;
 }
 
+// max listeners per address is log2(65536) = 16
+ipcRenderer.setMaxListeners(16);
+
 export const api = {
     /**
      * Here you can expose functions to the renderer process
@@ -40,19 +43,15 @@ export const api = {
 
     /**
      * Provide an easier way to listen to events
+     * @return function to terminate the listener
      */
-    onBiosReceive: (
-        address: number,
-        callback: (event: IpcRendererEvent, address: number, data: Uint16Array) => void,
-    ) => {
-        ipcRenderer.on(`receive-from-bios-${address}`, callback);
-    },
-
-    stopBiosListening: (
-        address: number,
-        callback: (event: IpcRendererEvent, address: number, data: Uint16Array) => void,
-    ) => {
-        ipcRenderer.off(`receive-from-bios-${address}`, callback);
+    onBiosReceive: (address: number, callback: (address: number, data: Uint16Array) => void): (() => void) => {
+        const event = (event: IpcRendererEvent, address: number, data: Uint16Array) => callback(address, data);
+        const channel = `receive-from-bios-${address}`;
+        ipcRenderer.addListener(channel, event);
+        return () => {
+            ipcRenderer.removeListener(channel, event);
+        };
     },
 
     getModules: async (): Promise<string[]> => {

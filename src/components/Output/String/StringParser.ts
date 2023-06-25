@@ -5,6 +5,7 @@ export default class StringParser {
     private readonly stringBuffer_uint8: Uint8Array;
     private readonly maxAddress: number;
     private value = '';
+    private readonly listenerStoppers: (() => void)[] = [];
 
     public constructor(
         private readonly baseAddress: number,
@@ -14,27 +15,25 @@ export default class StringParser {
         this.stringBuffer = new ArrayBuffer(maxLength);
         this.stringBuffer_uint8 = new Uint8Array(this.stringBuffer);
         this.maxAddress = this.baseAddress + this.maxLength;
-
-        this.onReceive = this.onReceive.bind(this);
     }
 
     public start() {
-        // this can probably go up in increments of two, but at least this way we're safe
-        for (let i = 0; i < this.maxLength; i++) {
-            window.Main.onBiosReceive(this.baseAddress + i, this.onReceive);
+        // this should be able to go up in increments of two, since two characters are sent per data object
+        for (let i = 0; i < this.maxLength; i += 2) {
+            this.listenerStoppers.push(window.Main.onBiosReceive(this.baseAddress + i, this.listener));
         }
     }
 
     public stop() {
-        for (let i = 0; i < this.maxLength; i++) {
-            window.Main.stopBiosListening(this.baseAddress + i, this.onReceive);
+        while (this.listenerStoppers.length > 0) {
+            this.listenerStoppers.pop()?.();
         }
     }
 
-    private onReceive(event: IpcRendererEvent, address: number, data: Uint16Array) {
+    private readonly listener = (address: number, data: Uint16Array) => {
         this.updateValue(address, data);
         this.updateCallback(this.value);
-    }
+    };
 
     private updateValue(calledAddress: number, data: Uint16Array): void {
         const data_uint8 = new Uint8Array(data.buffer);

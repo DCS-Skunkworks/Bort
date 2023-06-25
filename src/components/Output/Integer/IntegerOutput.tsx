@@ -37,11 +37,9 @@ export default class IntegerOutput extends Component<IntegerOutputProps, Integer
     }
 
     private updateValue(data: number) {
-        const { mask, shiftBy } = this.props;
-        const currentValue = (data & mask) >> shiftBy;
-
+        if (this.state.currentValue == data) return;
         this.setState({
-            currentValue: currentValue,
+            currentValue: data,
         });
     }
 

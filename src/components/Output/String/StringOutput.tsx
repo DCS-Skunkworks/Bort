@@ -34,6 +34,7 @@ export default class StringOutput extends Component<StringOutputProps, StringOut
     }
 
     private updateValue(newValue: string) {
+        if (this.state.currentValue == newValue) return;
         this.setState({
             currentValue: newValue,
         });
