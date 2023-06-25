@@ -178,14 +178,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                     o => o.type === OutputType.STRING,
                 )[0];
                 if (versionData !== undefined && versionData.max_length !== undefined) {
-                    this.parser = new StringParser(versionData.address, versionData.max_length, version => {
-                        this.setState(
-                            {
-                                version: version,
-                            },
-                            this.versionUpdated,
-                        );
-                    });
+                    this.parser = new StringParser(versionData.address, versionData.max_length, this.versionUpdated);
                     this.parser.start();
                 }
             },
@@ -242,7 +235,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
     }
 
     private heartbeat?: NodeJS.Timeout;
-    private versionUpdated(): void {
+    private versionUpdated(version: string): void {
         clearTimeout(this.heartbeat);
         this.heartbeat = setTimeout(
             () =>
@@ -251,6 +244,12 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                 }),
             1000,
         );
+
+        if (this.state.version !== version) {
+            this.setState({
+                version: version,
+            });
+        }
 
         if (this.state.attemptingReconnection) {
             this.setState({
