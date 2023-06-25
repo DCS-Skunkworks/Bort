@@ -321,7 +321,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                 }}
             >
                 <Grid container spacing={2}>
-                    <Grid xs={2} sm={2} className={'valign-wrapper'}>
+                    <Grid xs={'auto'} className={'valign-wrapper'}>
                         <Box
                             sx={
                                 connected
@@ -337,7 +337,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             {connected ? <>dcs-bios {version}</> : 'Connecting...'}
                         </Typography>
                     </Grid>
-                    <Grid xs={2} xsOffset={'auto'} sm={1} className={'valign-wrapper'}>
+                    <Grid xs={'auto'} xsOffset={'auto'} className={'valign-wrapper'}>
                         <IconButton onClick={onThemeToggle} color="inherit">
                             {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
