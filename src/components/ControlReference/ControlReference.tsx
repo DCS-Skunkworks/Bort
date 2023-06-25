@@ -302,11 +302,16 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             <InputLabel>Category</InputLabel>
                             <Select value={activeCategory} label={'Category'} onChange={this.changeCategory}>
                                 {hasModule
-                                    ? Object.entries(module).map(m => (
-                                          <MenuItem value={m[0]} key={m[0]}>
-                                              {m[0]}
-                                          </MenuItem>
-                                      ))
+                                    ? [
+                                          <MenuItem value={'ALL'} key={-1}>
+                                              {'⚠️ Show all'}
+                                          </MenuItem>,
+                                          ...Object.entries(module).map(m => (
+                                              <MenuItem value={m[0]} key={m[0]}>
+                                                  {m[0]}
+                                              </MenuItem>
+                                          )),
+                                      ]
                                     : []}
                             </Select>
                         </FormControl>

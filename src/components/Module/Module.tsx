@@ -23,7 +23,7 @@ export default class Module extends Component<ModuleProps> {
 
         return (
             <Stack spacing={2}>
-                {category !== undefined && (
+                {category !== undefined ? (
                     <Category
                         moduleName={moduleName}
                         categoryName={categoryName}
@@ -31,6 +31,17 @@ export default class Module extends Component<ModuleProps> {
                         showLiveData={showLiveData}
                         showArduinoData={showArduinoData}
                     />
+                ) : (
+                    Object.entries(module).map((e, i) => (
+                        <Category
+                            key={i}
+                            moduleName={moduleName}
+                            categoryName={e[0]}
+                            category={e[1]}
+                            showLiveData={showLiveData}
+                            showArduinoData={showArduinoData}
+                        />
+                    ))
                 )}
             </Stack>
         );
