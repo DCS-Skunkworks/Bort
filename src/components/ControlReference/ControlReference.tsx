@@ -1,6 +1,8 @@
+import { Edit, Pin, Translate } from '@mui/icons-material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {
+    Autocomplete,
     Box,
     Checkbox,
     Container,
@@ -14,14 +16,17 @@ import {
     PaletteMode,
     Select,
     SelectChangeEvent,
+    TextField,
     Typography,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import Grid from '@mui/system/Unstable_Grid';
+import * as React from 'react';
 import { Component, ReactNode } from 'react';
 
+import Control from '../../@types/Control';
 import ModuleSet from '../../@types/ModuleSet';
 import { OutputType } from '../../@types/OutputType';
 import Module from '../Module/Module';
@@ -41,6 +46,8 @@ export interface ControlReferenceState {
     modules: ModuleSet;
     activeModule: string;
     activeCategory: string;
+    focusedComponent: string | null;
+    focusedRef: React.RefObject<HTMLDivElement> | null;
     connected: boolean;
     attemptingReconnection: boolean;
     hasLoadedModules: boolean;
@@ -92,6 +99,8 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             modules: {},
             activeModule: '',
             activeCategory: '',
+            focusedComponent: null,
+            focusedRef: null,
             connected: false,
             attemptingReconnection: true,
             hasLoadedModules: false,
@@ -105,6 +114,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
         this.updateJsonPath = this.updateJsonPath.bind(this);
         this.updateConnectionStatus = this.updateConnectionStatus.bind(this);
         this.versionUpdated = this.versionUpdated.bind(this);
+        this.searchBoxChanged = this.searchBoxChanged.bind(this);
     }
 
     public override async componentDidMount(): Promise<void> {
@@ -170,6 +180,8 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                 modules: modules,
                 activeModule: activeModuleName,
                 activeCategory: activeCategoryName,
+                focusedComponent: null,
+                focusedRef: null,
                 hasLoadedModules: true,
             },
             () => {
@@ -223,6 +235,8 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             this.setState({
                 activeModule: newModuleName,
                 activeCategory: newCategory,
+                focusedComponent: null,
+                focusedRef: null,
             });
         }
     }
@@ -231,6 +245,8 @@ export default class ControlReference extends Component<ControlReferenceProps, C
         window.Main.setLastCategory(event.target.value);
         this.setState({
             activeCategory: event.target.value,
+            focusedComponent: null,
+            focusedRef: null,
         });
     }
 
@@ -258,6 +274,24 @@ export default class ControlReference extends Component<ControlReferenceProps, C
         }
     }
 
+    private searchBoxChanged(event: React.SyntheticEvent, value: AutoCompleteOption | null) {
+        if (value !== null) {
+            const ref: React.RefObject<HTMLDivElement> = React.createRef();
+            this.setState(
+                {
+                    activeCategory: value.control.category,
+                    focusedComponent: value.control.identifier,
+                    focusedRef: ref,
+                },
+                () => {
+                    if (ref.current !== null) {
+                        ref.current.scrollIntoView({ behavior: 'smooth' });
+                    }
+                },
+            );
+        }
+    }
+
     public render(): ReactNode {
         const { theme, onThemeToggle, onShowLiveDataToggle, onShowArduinoCodeToggle, showLiveData, showArduinoData } =
             this.props;
@@ -266,6 +300,8 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             moduleNames,
             activeModule,
             activeCategory,
+            focusedComponent,
+            focusedRef,
             connected,
             attemptingReconnection,
             hasLoadedModules,
@@ -285,6 +321,27 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                 }}
             >
                 <Grid container spacing={2}>
+                    <Grid xs={2} sm={2} className={'valign-wrapper'}>
+                        <Box
+                            sx={
+                                connected
+                                    ? attemptingReconnection
+                                        ? reconnectingPulsar
+                                        : connectedPulsar
+                                    : disconnectedPulsar
+                            }
+                        ></Box>
+                    </Grid>
+                    <Grid xs={4} sm={9} className={'valign-wrapper'}>
+                        <Typography variant={'body1'}>
+                            {connected ? <>dcs-bios {version}</> : 'Connecting...'}
+                        </Typography>
+                    </Grid>
+                    <Grid xs={2} xsOffset={'auto'} sm={1} className={'valign-wrapper'}>
+                        <IconButton onClick={onThemeToggle} color="inherit">
+                            {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                        </IconButton>
+                    </Grid>
                     <Grid xs={12} sm={4}>
                         <FormControl fullWidth>
                             <InputLabel>Module</InputLabel>
@@ -297,7 +354,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid xs={12} sm={8} md={4}>
+                    <Grid xs={12} sm={8}>
                         <FormControl fullWidth>
                             <InputLabel>Category</InputLabel>
                             <Select value={activeCategory} label={'Category'} onChange={this.changeCategory}>
@@ -316,26 +373,50 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid xs={2} md={1} className={'valign-wrapper'}>
-                        <Box
-                            sx={
-                                connected
-                                    ? attemptingReconnection
-                                        ? reconnectingPulsar
-                                        : connectedPulsar
-                                    : disconnectedPulsar
-                            }
-                        ></Box>
-                    </Grid>
-                    <Grid xs={4} md={2} className={'valign-wrapper'}>
-                        <Typography variant={'body1'}>
-                            {connected ? <>dcs-bios {version}</> : 'Connecting...'}
-                        </Typography>
-                    </Grid>
-                    <Grid xs={2} xsOffset={'auto'} sm={1} className={'valign-wrapper'}>
-                        <IconButton onClick={onThemeToggle} color="inherit">
-                            {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-                        </IconButton>
+                    <Grid xs={12}>
+                        <FormControl fullWidth>
+                            <Autocomplete
+                                disablePortal
+                                options={
+                                    module === undefined
+                                        ? []
+                                        : Object.entries(module).flatMap(e =>
+                                              Object.values(e[1]).map(control => ({
+                                                  label: control.description,
+                                                  control: control,
+                                              })),
+                                          )
+                                }
+                                groupBy={option => option.control.category}
+                                renderInput={params => (
+                                    <TextField {...params} type={'search'} label={'Search'} variant={'outlined'} />
+                                )}
+                                renderOption={(props, option, state) => (
+                                    <Box component={'li'} {...props}>
+                                        <Box component={'span'} sx={{ width: '2rem' }}>
+                                            {option.control.outputs.filter(o => o.type === OutputType.STRING).length >
+                                            0 ? (
+                                                <Translate />
+                                            ) : (
+                                                (option.control.inputs.length > 0 ||
+                                                    option.control.outputs.filter(o => o.type === OutputType.INTEGER)
+                                                        .length > 0) && <Pin />
+                                            )}
+                                        </Box>
+                                        <Box component={'span'} sx={{ width: '2rem' }}>
+                                            {option.control.inputs.length > 0 && <Edit />}
+                                        </Box>
+                                        <pre> {option.control.identifier} </pre>
+                                        {option.control.description}
+                                    </Box>
+                                )}
+                                blurOnSelect
+                                clearOnBlur
+                                selectOnFocus
+                                onChange={this.searchBoxChanged}
+                                isOptionEqualToValue={(a, b) => a.control.identifier === b.control.identifier}
+                            />
+                        </FormControl>
                     </Grid>
                     <Grid xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
                         <FormControlLabel
@@ -358,6 +439,8 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                                     module={module}
                                     moduleName={activeModule}
                                     categoryName={activeCategory}
+                                    focusedComponent={focusedComponent ?? undefined}
+                                    focusedRef={focusedRef ?? undefined}
                                     showLiveData={showLiveData}
                                     showArduinoData={showArduinoData}
                                 />
@@ -392,4 +475,9 @@ export default class ControlReference extends Component<ControlReferenceProps, C
             </Container>
         );
     }
+}
+
+interface AutoCompleteOption {
+    label: string;
+    control: Control;
 }

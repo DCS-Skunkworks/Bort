@@ -21,6 +21,31 @@ const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
             },
         },
     },
+    components: {
+        // autocomplete and outlined input overrides get the autocomplete box *close* to the standard height
+        // and remove some weird height inconsistencies
+        MuiAutocomplete: {
+            styleOverrides: {
+                input: {
+                    paddingTop: 'unset !important',
+                    paddingBottom: 'unset !important',
+                    borderBottomColor: '#00000000 !important',
+                    boxShadow: 'unset !important',
+                    marginBottom: '4px !important',
+                    marginTop: '4px !important',
+                    bottom: '0 !important',
+                },
+            },
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    paddingTop: 'unset !important',
+                    paddingBottom: 'unset !important',
+                },
+            },
+        },
+    },
 });
 
 interface AppState {
