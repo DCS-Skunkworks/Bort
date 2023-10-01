@@ -16,7 +16,8 @@ export default class LedSnippet extends Component<LedSnippetProps> {
 
         return (
             <Snippet>
-                DcsBios::LED {methodName}({Snippet.toHex(output.address)}, {Snippet.toHex(output.mask)},{' '}
+                DcsBios::LED {methodName}(
+                {output.address_mask_identifier || `${Snippet.toHex(output.address)}, ${Snippet.toHex(output.mask)}`},{' '}
                 <Variable>PIN</Variable>);
             </Snippet>
         );

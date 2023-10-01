@@ -16,8 +16,8 @@ export default class ServoSnippet extends Component<ServoSnippetProps> {
 
         return (
             <Snippet>
-                DcsBios::ServoOutput {methodName}({Snippet.toHex(output.address)}, <Variable>PIN</Variable>,{' '}
-                <Variable>544</Variable>, <Variable>2400</Variable>);
+                DcsBios::ServoOutput {methodName}({output.address_identifier || Snippet.toHex(output.address)},{' '}
+                <Variable>PIN</Variable>, <Variable>544</Variable>, <Variable>2400</Variable>);
             </Snippet>
         );
     }

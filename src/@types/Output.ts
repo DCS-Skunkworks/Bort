@@ -2,6 +2,9 @@ import { OutputType } from './OutputType';
 
 export default interface Output {
     address: number;
+    address_mask_shift_identifier?: string;
+    address_mask_identifier?: string;
+    address_identifier?: string;
     suffix: string;
     mask?: number;
     shift_by?: number;
