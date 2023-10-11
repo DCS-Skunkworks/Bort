@@ -17,6 +17,7 @@ const controlHeaderTheme: SxProps<Theme> = {
     borderRadius: '.25rem',
     padding: '1rem',
     marginTop: '1rem',
+    alignItems: 'center',
 };
 
 const controlNameTheme: SxProps<Theme> = {
@@ -41,15 +42,16 @@ export default class ControlHeader extends Component<ControlProps> {
         const { moduleName, description, identifier } = this.props;
         return (
             <Grid container item xs={12} sx={controlHeaderTheme} className="control-header">
-                <Grid item xs={12} sm={6} sx={controlNameTheme} className="control-description valign-wrapper">
+                <Grid item xs={12} sm={'auto'} sx={controlNameTheme} className="control-description">
                     <Typography variant={'h4'} component={'h3'}>
                         {description}
                     </Typography>
                 </Grid>
+                <Grid item xs />
                 <Grid
                     item
                     xs={12}
-                    sm={6}
+                    sm={'auto'}
                     className="control-identifier"
                     // onClick={this.selectContents}
                 >
@@ -59,7 +61,6 @@ export default class ControlHeader extends Component<ControlProps> {
                         sx={{
                             fontFamily: 'Monospace',
                         }}
-                        className={'right-align'}
                     >
                         <pre>
                             {moduleName}/{identifier}

@@ -44,7 +44,7 @@ export default class StringOutput extends Component<StringOutputProps, StringOut
         const { currentValue } = this.state;
 
         return (
-            <Grid container item xs={12} className="output valign-wrapper">
+            <Grid container item xs={12} sx={{ alignItems: 'center' }} className="output">
                 <Grid item xs={11} sx={{ overflowX: 'auto' }}>
                     <Typography
                         variant={'body1'}

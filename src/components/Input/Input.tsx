@@ -74,8 +74,8 @@ export default class Input extends Component<InputProps> {
                 container
                 item
                 spacing={2}
-                sx={{ marginTop: '.1rem', marginBottom: '1rem' }}
-                className={'input valign-wrapper'}
+                sx={{ marginTop: '.1rem', marginBottom: '1rem', alignItems: 'center' }}
+                className={'input'}
             >
                 <Grid
                     item
