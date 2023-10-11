@@ -63,8 +63,8 @@ export default class Output extends Component<OutputProps> {
                 item
                 columnSpacing={2}
                 rowSpacing={1}
-                sx={{ marginTop: '.1rem', marginBottom: '1rem' }}
-                className={'input valign-wrapper'}
+                sx={{ marginTop: '.1rem', marginBottom: '1rem', alignItems: 'center' }}
+                className={'input'}
             >
                 <Grid
                     item
