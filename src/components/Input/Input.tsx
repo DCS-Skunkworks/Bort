@@ -5,11 +5,14 @@ import InputItem from '../../@types/Input';
 import { InputInterface } from '../../@types/InputInterface';
 import ActionSnippetBlock from '../Snippet/InputSnippet/ActionSnippetBlock/ActionSnippetBlock';
 import SetStateSnippetBlock from '../Snippet/InputSnippet/SetStateSnippetBlock/SetStateSnippetBlock';
+import SetStringSnippetBlock from '../Snippet/InputSnippet/SetStringSnippetBlock/SetStringSnippetBlock';
 import FixedStepSnippetBlock from '../Snippet/InputSnippet/StepSnippetBlock/FixedStepSnippetBlock/FixedStepSnippetBlock';
 import VariableStepSnippetBlock from '../Snippet/InputSnippet/StepSnippetBlock/VariableStepSnippetBlock/VariableStepSnippetBlock';
+import StringSnippetBlock from '../Snippet/OutputSnippet/StringSnippetBlock/StringSnippetBlock';
 import ActionButton from './Action/ActionButton';
 import FixedStep from './FixedStep/FixedStep';
 import SetState from './SetState/SetState';
+import SetString from './String/SetString';
 import VariableStep from './VariableStep/VariableStep';
 
 export interface InputProps {
@@ -45,8 +48,12 @@ export default class Input extends Component<InputProps> {
                 );
             case InputInterface.SET_STATE:
                 return <SetState max={input.max_value!} onTrigger={this.trigger} />;
+            case InputInterface.SET_STRING:
+                return <SetString onClick={this.trigger} />;
         }
         console.error('no control!');
+
+        return <></>;
     }
 
     private snippetForInterface(): ReactNode {
@@ -60,6 +67,8 @@ export default class Input extends Component<InputProps> {
                 return <VariableStepSnippetBlock controlIdentifier={identifier} input={input} />;
             case InputInterface.SET_STATE:
                 return <SetStateSnippetBlock controlIdentifier={identifier} input={input} />;
+            case InputInterface.SET_STRING:
+                return <SetStringSnippetBlock controlIdentifier={identifier} input={input} />;
         }
 
         console.error('no snippet!');
