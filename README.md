@@ -1,12 +1,12 @@
-[![CI Build](https://github.com/charliefoxtwo/Bort/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/charliefoxtwo/Bort/actions/workflows/build.yml)
-[![GitHub](https://img.shields.io/github/license/charliefoxtwo/ViLA?style=flat-square)](LICENSE)
+[![CI Build](https://github.com/DCS-Skunkworks/Bort/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/DCS-Skunkworks/Bort/actions/workflows/build.yml)
+[![GitHub](https://img.shields.io/github/license/DCS-Skunkworks/Bort?style=flat-square)](LICENSE)
 [![Discord](https://img.shields.io/discord/840762843917582347?style=flat-square)](https://discord.gg/rWAF3AdsKT)
 
 ## Bort
 
 ![](https://static.wikia.nocookie.net/simpsons/images/4/41/Bort_boy.png)
 
-Bort (Bios Reference Tool) is a modern (probably) UI for [dcs-bios](https://github.com/DCSFlightpanels/dcs-bios) written as a standalone electron app.
+Bort (Bios Reference Tool) is a modern (probably) UI for [dcs-bios](https://github.com/DCS-Skunkworks/dcs-bios) written as a standalone electron app.
 
 It is designed as a modern replacement for the old bios reference tool that runs as a Chrome app, which are [no longer supported](https://support.google.com/chrome/thread/174381169?visit_id=638069310111462121-3654496055&p=chrome_app_deprecation&rd=1).
 
@@ -20,7 +20,7 @@ That said, I'm not a frontend engineer. This thing could use a lot of improvemen
 
 ## Installation
 
-Download and run the setup for the [latest release](https://github.com/charliefoxtwo/Bort/releases/latest) for your operating system (for 99.9% of you, this will be `bort-x.y.z.Setup.exe`). 
+Download and run the setup for the [latest release](https://github.com/DCS-Skunkworks/Bort/releases/latest) for your operating system (for 99.9% of you, this will be `bort-x.y.z.Setup.exe`). 
 
 ## Usage
 
