@@ -1,6 +1,6 @@
 [![CI Build](https://github.com/DCS-Skunkworks/Bort/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/DCS-Skunkworks/Bort/actions/workflows/build.yml)
 [![GitHub](https://img.shields.io/github/license/DCS-Skunkworks/Bort?style=flat-square)](LICENSE)
-[![Discord](https://img.shields.io/discord/840762843917582347?style=flat-square)](https://discord.gg/rWAF3AdsKT)
+[![Discord](https://img.shields.io/discord/840762843917582347?style=flat-square)](https://discord.gg/5svGwKX)
 
 ## Bort
 
