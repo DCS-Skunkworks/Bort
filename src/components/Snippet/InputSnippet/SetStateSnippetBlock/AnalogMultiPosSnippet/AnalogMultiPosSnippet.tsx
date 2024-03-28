@@ -15,7 +15,7 @@ export default class AnalogMultiPosSnippet extends Component<AnalogMultiPosSnipp
         return (
             <Snippet>
                 DcsBios::AnalogMultiPos {methodName}({`"${controlIdentifier}"`}, <Variable>PIN</Variable>,{' '}
-                <Variable>STEPS</Variable>, <Variable>(RESOLUTION/STEPS)</Variable>);
+                <Variable>STEPS</Variable>);
             </Snippet>
         );
     }

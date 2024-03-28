@@ -11,7 +11,7 @@ export interface StringBufferSnippetProps {
 export default class StringBufferSnippet extends Component<StringBufferSnippetProps> {
     public render(): ReactNode {
         const { controlIdentifier, output } = this.props;
-        const methodName = Snippet.snakeToCamelCase(`${controlIdentifier}_Buffer`);
+        const methodName = Snippet.snakeToCamelCase(`${controlIdentifier}${output.suffix}_Buffer`);
         const callbackMethodName = Snippet.snakeToCamelCase(`on_${controlIdentifier}_change`);
 
         return (

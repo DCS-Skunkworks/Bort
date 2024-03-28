@@ -320,8 +320,8 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                     paddingTop: '1rem',
                 }}
             >
-                <Grid container spacing={2}>
-                    <Grid xs={'auto'} className={'valign-wrapper'}>
+                <Grid container sx={{ alignItems: 'center' }} spacing={2}>
+                    <Grid xs={'auto'}>
                         <Box
                             sx={
                                 connected
@@ -332,12 +332,12 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             }
                         ></Box>
                     </Grid>
-                    <Grid xs={4} sm={9} className={'valign-wrapper'}>
+                    <Grid xs={4} sm={9}>
                         <Typography variant={'body1'}>
                             {connected ? <>dcs-bios {version}</> : 'Connecting...'}
                         </Typography>
                     </Grid>
-                    <Grid xs={'auto'} xsOffset={'auto'} className={'valign-wrapper'}>
+                    <Grid xs={'auto'} xsOffset={'auto'}>
                         <IconButton onClick={onThemeToggle} color="inherit">
                             {theme === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
                         </IconButton>
@@ -418,13 +418,13 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             />
                         </FormControl>
                     </Grid>
-                    <Grid xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
+                    <Grid xs={12} sm={6} md={4} lg={3} xl={2}>
                         <FormControlLabel
                             control={<Checkbox checked={showLiveData} onChange={onShowLiveDataToggle} name="live" />}
                             label="Show live data"
                         />
                     </Grid>
-                    <Grid xs={12} sm={6} md={4} lg={3} xl={2} className={'valign-wrapper'}>
+                    <Grid xs={12} sm={6} md={4} lg={3} xl={2}>
                         <FormControlLabel
                             control={
                                 <Checkbox checked={showArduinoData} onChange={onShowArduinoCodeToggle} name="arduino" />

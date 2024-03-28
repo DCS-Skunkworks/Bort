@@ -1,8 +1,9 @@
 {
     "name": "bort",
     "author": "charlie",
-    "version": "0.2.3",
+    "version": "0.2.5",
     "description": "A tool for sending data to and viewing data from DCS-BIOS.",
+    "private": true,
     "main": ".webpack/main",
     "scripts": {
         "start": "electron-forge start",
