@@ -22,8 +22,10 @@ export default class IntegerBufferSnippet extends Component<IntegerBufferSnippet
                 <br />
                 &#125;
                 <br />
-                DcsBios::IntegerBuffer {methodName}({Snippet.toHex(output.address)}, {Snippet.toHex(output.mask)},{' '}
-                {output.shift_by}, {callbackMethodName});
+                DcsBios::IntegerBuffer {methodName}(
+                {output.address_mask_shift_identifier ||
+                    `${Snippet.toHex(output.address)}, ${Snippet.toHex(output.mask)}, ${output.shift_by}`}
+                , {callbackMethodName});
             </Snippet>
         );
     }
