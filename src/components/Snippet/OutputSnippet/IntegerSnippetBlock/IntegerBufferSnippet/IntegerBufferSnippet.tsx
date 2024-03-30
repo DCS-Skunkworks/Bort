@@ -1,16 +1,11 @@
 import { Component, ReactNode } from 'react';
 
-import Output from '../../../../../@types/Output';
 import Snippet from '../../../Snippet';
+import { IntegerSnippetProps } from '../IntegerSnippetProps';
 
-export interface IntegerBufferSnippetProps {
-    controlIdentifier: string;
-    output: Output;
-}
-
-export default class IntegerBufferSnippet extends Component<IntegerBufferSnippetProps> {
+export default class IntegerBufferSnippet extends Component<IntegerSnippetProps> {
     public render(): ReactNode {
-        const { controlIdentifier, output } = this.props;
+        const { controlIdentifier, output, useAddressConstants } = this.props;
         const methodName = Snippet.snakeToCamelCase(`${controlIdentifier}_Buffer`);
         const callbackMethodName = Snippet.snakeToCamelCase(`on_${controlIdentifier}_change`);
 
@@ -23,7 +18,7 @@ export default class IntegerBufferSnippet extends Component<IntegerBufferSnippet
                 &#125;
                 <br />
                 DcsBios::IntegerBuffer {methodName}(
-                {output.address_mask_shift_identifier ||
+                {(useAddressConstants && output.address_mask_shift_identifier) ||
                     `${Snippet.toHex(output.address)}, ${Snippet.toHex(output.mask)}, ${output.shift_by}`}
                 , {callbackMethodName});
             </Snippet>

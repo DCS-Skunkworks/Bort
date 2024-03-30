@@ -37,8 +37,10 @@ export interface ControlReferenceProps {
     onThemeToggle: () => void;
     onShowLiveDataToggle: () => void;
     onShowArduinoCodeToggle: () => void;
+    onUseAddressConstantsToggle: () => void;
     showLiveData: boolean;
     showArduinoData: boolean;
+    useAddressConstants: boolean;
 }
 
 export interface ControlReferenceState {
@@ -293,8 +295,16 @@ export default class ControlReference extends Component<ControlReferenceProps, C
     }
 
     public render(): ReactNode {
-        const { theme, onThemeToggle, onShowLiveDataToggle, onShowArduinoCodeToggle, showLiveData, showArduinoData } =
-            this.props;
+        const {
+            theme,
+            onThemeToggle,
+            onShowLiveDataToggle,
+            onShowArduinoCodeToggle,
+            onUseAddressConstantsToggle,
+            showLiveData,
+            showArduinoData,
+            useAddressConstants,
+        } = this.props;
         const {
             modules,
             moduleNames,
@@ -432,6 +442,18 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                             label="Show arduino scaffold code"
                         />
                     </Grid>
+                    <Grid xs={12} sm={6} md={4} lg={3} xl={2}>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={useAddressConstants}
+                                    onChange={onUseAddressConstantsToggle}
+                                    name="constants"
+                                />
+                            }
+                            label="Use address constants"
+                        />
+                    </Grid>
                     <Grid xs={12}>
                         {hasLoadedModules ? (
                             module ? (
@@ -443,6 +465,7 @@ export default class ControlReference extends Component<ControlReferenceProps, C
                                     focusedRef={focusedRef ?? undefined}
                                     showLiveData={showLiveData}
                                     showArduinoData={showArduinoData}
+                                    useAddressConstants={useAddressConstants}
                                 />
                             ) : (
                                 <Box

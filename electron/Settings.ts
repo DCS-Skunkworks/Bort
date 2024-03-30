@@ -9,6 +9,7 @@ interface SettingsSchema {
     lastModule: string;
     lastCategory: string;
     alwaysOnTop: boolean;
+    useAddressConstants: boolean;
 }
 
 export default class Settings {
@@ -29,6 +30,7 @@ export default class Settings {
                 lastModule: 'MetadataEnd',
                 lastCategory: 'Metadata',
                 alwaysOnTop: true,
+                useAddressConstants: true,
             },
         });
     }
@@ -104,6 +106,16 @@ export default class Settings {
     public set AlwaysOnTop(newValue: boolean) {
         this.store.set({
             alwaysOnTop: newValue,
+        });
+    }
+
+    public get UseAddressConstants(): boolean {
+        return this.store.get('useAddressConstants');
+    }
+
+    public set UseAddressConstants(newValue: boolean) {
+        this.store.set({
+            useAddressConstants: newValue,
         });
     }
 }

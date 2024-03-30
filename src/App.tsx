@@ -65,6 +65,7 @@ interface AppState {
     mode: PaletteMode;
     showLiveData: boolean;
     showArduinoData: boolean;
+    useAddressConstants: boolean;
 }
 
 export default class App extends Component<unknown, AppState> {
@@ -75,11 +76,13 @@ export default class App extends Component<unknown, AppState> {
             mode: 'light',
             showLiveData: true,
             showArduinoData: false,
+            useAddressConstants: false,
         };
 
         this.toggleColorMode = this.toggleColorMode.bind(this);
         this.toggleShowLiveData = this.toggleShowLiveData.bind(this);
         this.toggleShowArduinoData = this.toggleShowArduinoData.bind(this);
+        this.toggleUseAddressConstants = this.toggleUseAddressConstants.bind(this);
     }
 
     public componentDidMount() {
@@ -87,6 +90,7 @@ export default class App extends Component<unknown, AppState> {
             mode: window.Main.getSettingsTheme(),
             showLiveData: window.Main.getShowLiveData(),
             showArduinoData: window.Main.getShowArduinoData(),
+            useAddressConstants: window.Main.getUseAddressConstants(),
         });
     }
 
@@ -114,8 +118,16 @@ export default class App extends Component<unknown, AppState> {
         });
     }
 
+    private toggleUseAddressConstants() {
+        const newValue = !this.state.useAddressConstants;
+        window.Main.setUseAddressConstants(newValue);
+        this.setState({
+            useAddressConstants: newValue,
+        });
+    }
+
     public render() {
-        const { mode, showLiveData, showArduinoData } = this.state;
+        const { mode, showLiveData, showArduinoData, useAddressConstants } = this.state;
         const theme = responsiveFontSizes(createTheme(getDesignTokens(mode)), {
             factor: 5,
         });
@@ -139,8 +151,10 @@ export default class App extends Component<unknown, AppState> {
                         onThemeToggle={this.toggleColorMode}
                         onShowLiveDataToggle={this.toggleShowLiveData}
                         onShowArduinoCodeToggle={this.toggleShowArduinoData}
+                        onUseAddressConstantsToggle={this.toggleUseAddressConstants}
                         showLiveData={showLiveData}
                         showArduinoData={showArduinoData}
+                        useAddressConstants={useAddressConstants}
                     />
                 </ThemeProvider>
             </React.StrictMode>

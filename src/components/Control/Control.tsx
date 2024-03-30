@@ -13,6 +13,7 @@ export interface ControlProps {
     moduleName: string;
     showLiveData: boolean;
     showArduinoData: boolean;
+    useAddressConstants: boolean;
     control: ControlItem;
 }
 
@@ -39,7 +40,7 @@ export default class Control extends Component<ControlProps> {
     }
 
     public render(): ReactNode {
-        const { moduleName, control, showLiveData, showArduinoData } = this.props;
+        const { moduleName, control, showLiveData, showArduinoData, useAddressConstants } = this.props;
         const hasInputs = control.inputs.length > 0;
         const hasOutputs = control.outputs.length > 0;
         return (
@@ -73,6 +74,7 @@ export default class Control extends Component<ControlProps> {
                                     key={x.type}
                                     showLiveData={showLiveData}
                                     showArduinoData={showArduinoData}
+                                    useAddressConstants={useAddressConstants}
                                 />
                             ))}
                         </IOContainer>

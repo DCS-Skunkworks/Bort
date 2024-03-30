@@ -1,22 +1,18 @@
 import { Component, ReactNode } from 'react';
 
-import Output from '../../../../../@types/Output';
 import Snippet from '../../../Snippet';
 import Variable from '../../../Variable/Variable';
+import { IntegerSnippetProps } from '../IntegerSnippetProps';
 
-export interface ServoSnippetProps {
-    controlIdentifier: string;
-    output: Output;
-}
-
-export default class ServoSnippet extends Component<ServoSnippetProps> {
+export default class ServoSnippet extends Component<IntegerSnippetProps> {
     public render(): ReactNode {
-        const { controlIdentifier, output } = this.props;
+        const { controlIdentifier, output, useAddressConstants } = this.props;
         const methodName = Snippet.snakeToCamelCase(controlIdentifier);
 
         return (
             <Snippet>
-                DcsBios::ServoOutput {methodName}({output.address_identifier || Snippet.toHex(output.address)},{' '}
+                DcsBios::ServoOutput {methodName}(
+                {(useAddressConstants && output.address_identifier) || Snippet.toHex(output.address)},{' '}
                 <Variable>PIN</Variable>, <Variable>544</Variable>, <Variable>2400</Variable>);
             </Snippet>
         );
