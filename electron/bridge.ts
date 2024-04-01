@@ -165,6 +165,14 @@ export const api = {
         Settings.Instance.ShowArduinoData = value;
     },
 
+    getUseAddressConstants: (): boolean => {
+        return Settings.Instance.UseAddressConstants;
+    },
+
+    setUseAddressConstants: (value: boolean) => {
+        Settings.Instance.UseAddressConstants = value;
+    },
+
     getSettingsJsonPath: (): string => {
         return Settings.Instance.JsonPath;
     },

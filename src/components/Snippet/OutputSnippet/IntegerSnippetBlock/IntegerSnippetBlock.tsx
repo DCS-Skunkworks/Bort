@@ -1,37 +1,47 @@
 import { Component, ReactNode } from 'react';
 
-import Output from '../../../../@types/Output';
 import OutputSnippetBlock from '../OutputSnippetBlock';
 import IntegerBufferSnippet from './IntegerBufferSnippet/IntegerBufferSnippet';
+import { IntegerSnippetProps } from './IntegerSnippetProps';
 import LedSnippet from './LedSnippet/LedSnippet';
 import ServoSnippet from './ServoSnippet/ServoSnippet';
 
-export interface IntegerSnippetBlockProps {
-    controlIdentifier: string;
-    output: Output;
-}
-
-export default class IntegerSnippetBlock extends Component<IntegerSnippetBlockProps> {
-    constructor(props: IntegerSnippetBlockProps) {
+export default class IntegerSnippetBlock extends Component<IntegerSnippetProps> {
+    constructor(props: IntegerSnippetProps) {
         super(props);
 
         this.snippetsForInput = this.snippetsForInput.bind(this);
     }
 
     private *snippetsForInput(): Iterable<ReactNode> {
-        const { controlIdentifier, output } = this.props;
+        const { controlIdentifier, output, useAddressConstants } = this.props;
         yield (
             <IntegerBufferSnippet
                 controlIdentifier={controlIdentifier}
                 output={output}
+                useAddressConstants={useAddressConstants}
                 key={'integer-buffer-snippet'}
             />
         );
 
         if (output.max_value == 1) {
-            yield <LedSnippet controlIdentifier={controlIdentifier} output={output} key={'led-snippet'} />;
+            yield (
+                <LedSnippet
+                    controlIdentifier={controlIdentifier}
+                    output={output}
+                    useAddressConstants={useAddressConstants}
+                    key={'led-snippet'}
+                />
+            );
         } else if (output.max_value == 65535) {
-            yield <ServoSnippet controlIdentifier={controlIdentifier} output={output} key={'servo-snippet'} />;
+            yield (
+                <ServoSnippet
+                    controlIdentifier={controlIdentifier}
+                    output={output}
+                    useAddressConstants={useAddressConstants}
+                    key={'servo-snippet'}
+                />
+            );
         }
     }
 

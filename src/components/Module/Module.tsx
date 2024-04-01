@@ -12,6 +12,7 @@ export interface ModuleProps {
     focusedRef?: React.RefObject<HTMLDivElement>;
     showLiveData: boolean;
     showArduinoData: boolean;
+    useAddressConstants: boolean;
 }
 
 export default class Module extends Component<ModuleProps> {
@@ -20,8 +21,16 @@ export default class Module extends Component<ModuleProps> {
     }
 
     public render(): ReactNode {
-        const { module, moduleName, categoryName, focusedComponent, focusedRef, showLiveData, showArduinoData } =
-            this.props;
+        const {
+            module,
+            moduleName,
+            categoryName,
+            focusedComponent,
+            focusedRef,
+            showLiveData,
+            showArduinoData,
+            useAddressConstants,
+        } = this.props;
         const category = module[categoryName];
 
         return (
@@ -35,6 +44,7 @@ export default class Module extends Component<ModuleProps> {
                         showArduinoData={showArduinoData}
                         focusedComponent={focusedComponent}
                         focusedRef={focusedRef}
+                        useAddressConstants={useAddressConstants}
                     />
                 ) : (
                     Object.entries(module).map((e, i) => (
@@ -47,6 +57,7 @@ export default class Module extends Component<ModuleProps> {
                             showLiveData={showLiveData}
                             showArduinoData={showArduinoData}
                             focusedRef={focusedRef}
+                            useAddressConstants={useAddressConstants}
                         />
                     ))
                 )}

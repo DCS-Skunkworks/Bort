@@ -13,6 +13,7 @@ export interface OutputProps {
     output: OutputItem;
     showLiveData: boolean;
     showArduinoData: boolean;
+    useAddressConstants: boolean;
 }
 
 export default class Output extends Component<OutputProps> {
@@ -42,12 +43,24 @@ export default class Output extends Component<OutputProps> {
     }
 
     private snippetForInterface(): ReactNode {
-        const { identifier, output } = this.props;
+        const { identifier, output, useAddressConstants } = this.props;
         switch (output.type) {
             case OutputType.INTEGER:
-                return <IntegerSnippetBlock controlIdentifier={identifier} output={output} />;
+                return (
+                    <IntegerSnippetBlock
+                        controlIdentifier={identifier}
+                        output={output}
+                        useAddressConstants={useAddressConstants}
+                    />
+                );
             case OutputType.STRING:
-                return <StringSnippetBlock controlIdentifier={identifier} output={output} />;
+                return (
+                    <StringSnippetBlock
+                        controlIdentifier={identifier}
+                        output={output}
+                        useAddressConstants={useAddressConstants}
+                    />
+                );
         }
 
         console.error('no snippet!');

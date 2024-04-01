@@ -12,6 +12,7 @@ export interface CategoryProps {
     focusedRef?: React.RefObject<HTMLDivElement>;
     showLiveData: boolean;
     showArduinoData: boolean;
+    useAddressConstants: boolean;
 }
 
 export default class Category extends Component<CategoryProps> {
@@ -20,8 +21,16 @@ export default class Category extends Component<CategoryProps> {
     }
 
     public render(): ReactNode {
-        const { moduleName, categoryName, category, focusedComponent, focusedRef, showLiveData, showArduinoData } =
-            this.props;
+        const {
+            moduleName,
+            categoryName,
+            category,
+            focusedComponent,
+            focusedRef,
+            showLiveData,
+            showArduinoData,
+            useAddressConstants,
+        } = this.props;
         return (
             <Stack spacing={2} className="category">
                 <Typography variant={'h2'}>{categoryName}</Typography>
@@ -35,6 +44,7 @@ export default class Category extends Component<CategoryProps> {
                                 key={e[1].identifier}
                                 showLiveData={showLiveData}
                                 showArduinoData={showArduinoData}
+                                useAddressConstants={useAddressConstants}
                             />
                         </div>
                     ))}

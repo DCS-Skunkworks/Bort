@@ -1,21 +1,20 @@
 import { Component, ReactNode } from 'react';
 
-import Output from '../../../../@types/Output';
 import OutputSnippetBlock from '../OutputSnippetBlock';
 import StringBufferSnippet from './StringBufferSnippet/StringBufferSnippet';
+import { StringSnippetProps } from './StringSnippetProps';
 
-export interface StringSnippetBlockProps {
-    controlIdentifier: string;
-    output: Output;
-}
-
-export default class StringSnippetBlock extends Component<StringSnippetBlockProps> {
+export default class StringSnippetBlock extends Component<StringSnippetProps> {
     public render(): ReactNode {
-        const { controlIdentifier, output } = this.props;
+        const { controlIdentifier, output, useAddressConstants } = this.props;
 
         return (
             <OutputSnippetBlock output={output}>
-                <StringBufferSnippet controlIdentifier={controlIdentifier} output={output} />
+                <StringBufferSnippet
+                    controlIdentifier={controlIdentifier}
+                    output={output}
+                    useAddressConstants={useAddressConstants}
+                />
             </OutputSnippetBlock>
         );
     }
