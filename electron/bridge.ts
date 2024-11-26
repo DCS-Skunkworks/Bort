@@ -1,7 +1,6 @@
 import { PaletteMode } from '@mui/material';
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { promises as fs } from 'fs';
-//import { * as path } from 'path';
 import * as path from 'path';
 
 import ModuleSet from '../src/@types/ModuleSet';
