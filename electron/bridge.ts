@@ -1,6 +1,8 @@
 import { PaletteMode } from '@mui/material';
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { promises as fs } from 'fs';
+//import { * as path } from 'path';
+import * as path from 'path';
 
 import ModuleSet from '../src/@types/ModuleSet';
 import Settings from './Settings';
@@ -15,7 +17,7 @@ type StringFunction = (data: string) => void;
 const callbacks: { [name: number]: (IntegerFunction | StringFunction)[] } = {};
 
 function getFileFromRoot(file: string): string {
-    return `${Settings.Instance.JsonPath}\\${file}`;
+    return `${Settings.Instance.JsonPath}${path.sep}${file}`;
 }
 
 // max listeners per address is log2(65536) = 16
@@ -67,7 +69,6 @@ export const api = {
         try {
             const buffer = await fs.readFile(getFileFromRoot('AircraftAliases.json'));
             const data: AircraftData = JSON.parse(buffer.toString());
-
             // we can parse the values of AircraftAliases.json to find the json files for all modules
             Object.entries(data).forEach(entry => {
                 const values = entry[1];
@@ -76,6 +77,7 @@ export const api = {
                 }
             });
         } catch (e) {
+            console.log(e);
             modulesSet.clear();
         }
 
