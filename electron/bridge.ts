@@ -1,7 +1,7 @@
 import { PaletteMode } from '@mui/material';
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { promises as fs } from 'fs';
-import * as path from 'path';
+import { sep as path_sep } from 'path';
 
 import ModuleSet from '../src/@types/ModuleSet';
 import Settings from './Settings';
@@ -16,7 +16,7 @@ type StringFunction = (data: string) => void;
 const callbacks: { [name: number]: (IntegerFunction | StringFunction)[] } = {};
 
 function getFileFromRoot(file: string): string {
-    return `${Settings.Instance.JsonPath}${path.sep}${file}`;
+    return `${Settings.Instance.JsonPath}${path_sep}${file}`;
 }
 
 // max listeners per address is log2(65536) = 16
