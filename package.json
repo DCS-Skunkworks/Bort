@@ -24,6 +24,7 @@
         "@mui/icons-material": "^5.11.16",
         "@mui/material": "^5.13.6",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+        "@types/node": "^22.10.0",
         "electron-store": "^8.0.1",
         "materialize-css": "^1.0.0",
         "react": "18.0.0",
