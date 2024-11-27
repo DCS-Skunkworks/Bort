@@ -83,7 +83,7 @@ function createWindow() {
                         const packageInfo = require('../package.json');
                         dialog
                             .showMessageBox({
-                                message: `Bort Version: ${ packageInfo.version }`
+                                message: `Bort version: ${ packageInfo.version }`
                             })
                             // should always handle the error yourself, later Electron release might crash if you don't
                             .catch(function (err) {
