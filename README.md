@@ -24,7 +24,7 @@ Download and run the setup for the [latest release](https://github.com/DCS-Skunk
 
 ## Usage
 
-Upon first running the tool and if you are **not** on OpenBeta, you'll need to tell it where dcs-bios is, so it can load all the configuration files. Go to `Menu -> Select dcs-bios location` (or just press `Ctrl+O`) and select the folder where the dcs-bios json files are located (e.g. `%USERPROFILE%/Saved Games/DCS/Scripts/DCS-BIOS/doc/json`). Once this has been set, it doesn't need to be set again.
+Upon first running the tool and if you installed DCS when OpenBeta was a thing, you'll need to tell it where dcs-bios is, so it can load all the configuration files. Go to `Menu -> Select dcs-bios location` (or just press `Ctrl+O`) and select the folder where the dcs-bios json files are located (e.g. `%USERPROFILE%/Saved Games/DCS.openbeta/Scripts/DCS-BIOS/doc/json`). Once this has been set, it doesn't need to be set again.
 
 
 ## Contributing
