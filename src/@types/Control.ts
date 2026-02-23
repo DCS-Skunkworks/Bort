@@ -13,4 +13,5 @@ export default interface Control {
     description: string;
     deprecated?: DeprecatedAttributeDocumentation;
     positions?: string[];
+    color?: string;
 }

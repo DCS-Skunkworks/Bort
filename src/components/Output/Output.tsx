@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Chip, Grid, Typography } from '@mui/material';
 import { Component, ReactNode } from 'react';
 
 import OutputItem from '../../@types/Output';
@@ -15,6 +15,7 @@ export interface OutputProps {
     showArduinoData: boolean;
     useAddressConstants: boolean;
     onIntegerUpdate: (v: number) => void;
+    color?: string;
 }
 
 export default class Output extends Component<OutputProps> {
@@ -71,7 +72,7 @@ export default class Output extends Component<OutputProps> {
     }
 
     public render(): ReactNode {
-        const { output, showLiveData, showArduinoData } = this.props;
+        const { output, showLiveData, showArduinoData, color } = this.props;
         return (
             <Grid
                 container
@@ -93,9 +94,28 @@ export default class Output extends Component<OutputProps> {
                         Type:
                     </Typography>
                 </Grid>
-                <Grid item xs={10} lg={2}>
+                <Grid item xs={color === undefined ? 10 : 4} lg={2}>
                     <Typography>{output.type}</Typography>
                 </Grid>
+                {color !== undefined && (
+                    <>
+                        <Grid
+                            item
+                            xs={2}
+                            sx={{
+                                fontWeight: theme => theme.typography.fontWeightBold,
+                            }}
+                            className={'right-align'}
+                        >
+                            <Typography variant={'h6'} component={'h5'}>
+                                Color:
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4}>
+                            <Chip label={color} variant={'outlined'} />
+                        </Grid>
+                    </>
+                )}
                 {showLiveData ? (
                     <>
                         <Grid item xs={2} className={'right-align'}>

@@ -102,6 +102,7 @@ export default class Control extends Component<ControlProps, ControlState> {
                                     showArduinoData={showArduinoData}
                                     useAddressConstants={useAddressConstants}
                                     onIntegerUpdate={this.updateValue}
+                                    color={control.color}
                                 />
                             ))}
                         </IOContainer>
