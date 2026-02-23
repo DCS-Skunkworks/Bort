@@ -9,6 +9,7 @@ export interface IntegerOutputProps {
     mask: number;
     shiftBy: number;
     maxValue: number;
+    onValueChanged: (value: number) => void;
 }
 
 export interface IntegerOutputState {
@@ -41,6 +42,7 @@ export default class IntegerOutput extends Component<IntegerOutputProps, Integer
         this.setState({
             currentValue: data,
         });
+        this.props.onValueChanged(data);
     }
 
     public render(): ReactNode {

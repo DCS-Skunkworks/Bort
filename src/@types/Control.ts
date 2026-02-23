@@ -1,3 +1,4 @@
+import DeprecatedAttributeDocumentation from './DeprecatedAttributeDocumentation';
 import Input from './Input';
 import Output from './Output';
 
@@ -10,4 +11,6 @@ export default interface Control {
     momentary_positions: string;
     physical_variant: string;
     description: string;
+    deprecated?: DeprecatedAttributeDocumentation;
+    positions?: string[];
 }

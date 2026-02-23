@@ -4,10 +4,12 @@ import { SxProps } from '@mui/system';
 import { Component, ReactNode } from 'react';
 
 import ControlItem from '../../@types/Control';
+import { InputInterface } from '../../@types/InputInterface';
 import ControlHeader from '../ControlHeader/ControlHeader';
 import Input from '../Input/Input';
 import IOContainer from '../IOContainer/IOContainer';
 import Output from '../Output/Output';
+import PositionsContainer from '../PositionsContainer/PositionsContainer';
 
 export interface ControlProps {
     moduleName: string;
@@ -17,6 +19,10 @@ export interface ControlProps {
     control: ControlItem;
 }
 
+interface ControlState {
+    value?: number;
+}
+
 const controlTheme: SxProps<Theme> = {
     // borderTopWidth: '.1rem',
     // borderTopColor: theme => theme.palette.text.primary,
@@ -24,10 +30,12 @@ const controlTheme: SxProps<Theme> = {
     // marginTop: '1rem',
 };
 
-export default class Control extends Component<ControlProps> {
+export default class Control extends Component<ControlProps, ControlState> {
     public constructor(props: ControlProps) {
         super(props);
         this.selectContents = this.selectContents.bind(this);
+        this.updateValue = this.updateValue.bind(this);
+        this.state = {};
     }
 
     // use this to auto select the control name
@@ -39,8 +47,15 @@ export default class Control extends Component<ControlProps> {
         sel.addRange(range);
     }
 
+    updateValue(v: number) {
+        this.setState({
+            value: v,
+        });
+    }
+
     public render(): ReactNode {
         const { moduleName, control, showLiveData, showArduinoData, useAddressConstants } = this.props;
+        const { value } = this.state;
         const hasInputs = control.inputs.length > 0;
         const hasOutputs = control.outputs.length > 0;
         return (
@@ -50,8 +65,19 @@ export default class Control extends Component<ControlProps> {
                     moduleName={moduleName}
                     description={control.description}
                     identifier={control.identifier}
+                    deprecated={control.deprecated}
                 />
                 <Grid container className="control-body">
+                    {control.positions !== undefined && (
+                        <PositionsContainer
+                            positions={control.positions}
+                            value={value}
+                            identifier={control.identifier}
+                            allowInput={
+                                control.inputs.find(c => c.interface === InputInterface.SET_STATE) !== undefined
+                            }
+                        />
+                    )}
                     {hasInputs && (
                         <IOContainer text={'Input'}>
                             {control.inputs.map(x => (
@@ -75,6 +101,7 @@ export default class Control extends Component<ControlProps> {
                                     showLiveData={showLiveData}
                                     showArduinoData={showArduinoData}
                                     useAddressConstants={useAddressConstants}
+                                    onIntegerUpdate={this.updateValue}
                                 />
                             ))}
                         </IOContainer>

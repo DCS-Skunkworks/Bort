@@ -1,12 +1,15 @@
-import { Grid, Typography } from '@mui/material';
+import { Chip, Grid, Typography } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 import { Component, ReactNode } from 'react';
+
+import DeprecatedAttributeDocumentation from '../../@types/DeprecatedAttributeDocumentation';
 
 export interface ControlProps {
     moduleName: string;
     description: string;
     identifier: string;
+    deprecated?: DeprecatedAttributeDocumentation;
 }
 
 const controlHeaderTheme: SxProps<Theme> = {
@@ -39,11 +42,15 @@ export default class ControlHeader extends Component<ControlProps> {
     }
 
     public render(): ReactNode {
-        const { moduleName, description, identifier } = this.props;
+        const { moduleName, description, identifier, deprecated } = this.props;
         return (
             <Grid container item xs={12} sx={controlHeaderTheme} className="control-header">
                 <Grid item xs={12} sm={'auto'} sx={controlNameTheme} className="control-description">
-                    <Typography variant={'h4'} component={'h3'}>
+                    <Typography
+                        variant={'h4'}
+                        component={'h3'}
+                        sx={{ opacity: deprecated !== undefined ? '50%' : '100%' }}
+                    >
                         {description}
                     </Typography>
                 </Grid>
@@ -53,6 +60,7 @@ export default class ControlHeader extends Component<ControlProps> {
                     xs={12}
                     sm={'auto'}
                     className="control-identifier"
+                    sx={{ opacity: deprecated !== undefined ? '50%' : '100%' }}
                     // onClick={this.selectContents}
                 >
                     <Typography
@@ -60,6 +68,7 @@ export default class ControlHeader extends Component<ControlProps> {
                         component={'div'}
                         sx={{
                             fontFamily: 'Monospace',
+                            textDecoration: deprecated !== undefined ? 'line-through' : 'initial',
                         }}
                     >
                         <pre>
@@ -67,6 +76,33 @@ export default class ControlHeader extends Component<ControlProps> {
                         </pre>
                     </Typography>
                 </Grid>
+                {deprecated !== undefined && (
+                    <Grid container item xs={12} spacing={2} justifyContent={'space-between'}>
+                        <Grid item xs={12} sm={'auto'}>
+                            <Chip label={'Deprecated'} color={'error'} variant={'outlined'} />
+                        </Grid>
+                        {deprecated.use_instead !== undefined && (
+                            <Grid container item xs={12} sm={'auto'} direction={'row'} spacing={1}>
+                                <Grid item>
+                                    <Typography variant={'body1'} component={'div'}>
+                                        Replaced by:
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Typography
+                                        variant={'body1'}
+                                        component={'div'}
+                                        sx={{
+                                            fontFamily: 'Monospace',
+                                        }}
+                                    >
+                                        {moduleName}/{deprecated.use_instead}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        )}
+                    </Grid>
+                )}
             </Grid>
         );
     }

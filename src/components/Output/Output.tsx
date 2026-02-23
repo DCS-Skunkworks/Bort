@@ -14,6 +14,7 @@ export interface OutputProps {
     showLiveData: boolean;
     showArduinoData: boolean;
     useAddressConstants: boolean;
+    onIntegerUpdate: (v: number) => void;
 }
 
 export default class Output extends Component<OutputProps> {
@@ -34,6 +35,7 @@ export default class Output extends Component<OutputProps> {
                         mask={output.mask!}
                         maxValue={output.max_value!}
                         shiftBy={output.shift_by!}
+                        onValueChanged={this.props.onIntegerUpdate}
                     />
                 );
             case OutputType.STRING:
